@@ -1,0 +1,428 @@
+---
+/**
+ * Console Explorer Demo
+ * A simple interactive demo for Station 1: Setting Up the Workbench
+ * Lets students experiment with console.log() without writing code
+ */
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console Explorer - HAP's Demo</title>
+    <style>
+        :root {
+            --hap-orange: hsl(32, 76%, 63%);
+            --hap-orange-dark: hsl(32, 76%, 45%);
+            --bg-dark: hsl(220, 13%, 18%);
+            --bg-card: hsl(220, 13%, 95%);
+            --text-dark: hsl(220, 13%, 20%);
+            --text-light: hsl(220, 13%, 96%);
+            --text-muted: hsl(220, 10%, 50%);
+            --border-color: hsl(220, 13%, 80%);
+            --console-bg: hsl(220, 13%, 12%);
+            --console-text: hsl(120, 100%, 75%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.5rem;
+            color: var(--hap-orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .demo-container {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 10px 40px hsl(220, 13%, 10%, 0.15);
+        }
+
+        .demo-header {
+            background: linear-gradient(135deg, var(--hap-orange), var(--hap-orange-dark));
+            color: var(--text-light);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .demo-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .input-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .input-section label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: var(--hap-orange);
+        }
+
+        .buttons-section {
+            padding: 1rem 1.5rem;
+            background-color: hsl(220, 13%, 92%);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .buttons-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .log-btn {
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            color: var(--text-light);
+        }
+
+        .log-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px hsl(220, 13%, 10%, 0.2);
+        }
+
+        .log-btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-simple {
+            background-color: var(--hap-orange);
+        }
+
+        .btn-label {
+            background-color: hsl(210, 70%, 50%);
+        }
+
+        .btn-multiple {
+            background-color: hsl(280, 60%, 50%);
+        }
+
+        .btn-robot {
+            background-color: hsl(160, 60%, 40%);
+        }
+
+        .code-hint {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.7rem;
+            opacity: 0.9;
+            display: block;
+            margin-top: 0.25rem;
+        }
+
+        .console-section {
+            padding: 1rem 1.5rem;
+        }
+
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .console-header h3 {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .message-count {
+            background-color: var(--hap-orange);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+        }
+
+        .clear-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .clear-btn:hover {
+            background-color: hsl(220, 13%, 88%);
+        }
+
+        .console-output {
+            background-color: var(--console-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            color: var(--console-text);
+            min-height: 150px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .log-line {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid hsl(220, 13%, 20%);
+            word-wrap: break-word;
+        }
+
+        .log-line:last-child {
+            border-bottom: none;
+        }
+
+        .empty-console {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .tip-section {
+            padding: 1rem 1.5rem;
+            background-color: hsl(32, 76%, 95%);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .tip-section p {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
+
+        .tip-section strong {
+            color: var(--hap-orange-dark);
+        }
+
+        .back-link {
+            margin-top: 1.5rem;
+            color: var(--hap-orange);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!--
+    HAP Educational Content © 2026 Cynthia Teeters. All rights reserved.
+    HyBit A. ProtoBot (HAP) character and the apprentice learning methodology are proprietary educational innovations.
+    -->
+
+    <header class="page-header">
+        <h1>Console Explorer</h1>
+        <p>Experiment with console.log() - no coding required!</p>
+    </header>
+
+    <main class="demo-container">
+        <div class="demo-header">
+            <span>🖥️</span>
+            <h2>Your Message Laboratory</h2>
+        </div>
+
+        <section class="input-section">
+            <label for="message-input">Type your message:</label>
+            <div class="input-row">
+                <input
+                    type="text"
+                    id="message-input"
+                    class="message-input"
+                    placeholder="Hello, Console!"
+                    value="HAP online!"
+                >
+            </div>
+        </section>
+
+        <section class="buttons-section">
+            <h3>Choose how to log it</h3>
+            <div class="button-grid">
+                <button class="log-btn btn-simple" onclick="logSimple()">
+                    Log It
+                    <span class="code-hint">console.log(message)</span>
+                </button>
+                <button class="log-btn btn-label" onclick="logWithLabel()">
+                    With Label
+                    <span class="code-hint">console.log("Message:", message)</span>
+                </button>
+                <button class="log-btn btn-multiple" onclick="logMultiple()">
+                    Log Twice
+                    <span class="code-hint">console.log("1:", msg, "2:", msg)</span>
+                </button>
+                <button class="log-btn btn-robot" onclick="logRobot()">
+                    Robot Style
+                    <span class="code-hint">console.log("Robot:", name, "Energy:", 100)</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="console-section">
+            <div class="console-header">
+                <h3>
+                    Console Output
+                    <span class="message-count" id="message-count">0</span>
+                </h3>
+                <button class="clear-btn" onclick="clearConsole()">Clear</button>
+            </div>
+            <div class="console-output" id="console-output">
+                <div class="empty-console">Your messages will appear here...</div>
+            </div>
+        </section>
+
+        <section class="tip-section">
+            <p><strong>🟠 HAP's Tip:</strong> In a real project, you'd press F12 to open Developer Tools
+            and see these messages in the browser's Console tab. This demo shows you what that looks like!</p>
+        </section>
+    </main>
+
+    <a href="/stations/station1/" class="back-link">← Back to Station 1</a>
+
+    <script is:inline>
+        let messageCount = 0;
+
+        function getMessage() {
+            return document.getElementById('message-input').value || 'HAP online!';
+        }
+
+        function addToConsole(text) {
+            const consoleOutput = document.getElementById('console-output');
+            const countDisplay = document.getElementById('message-count');
+
+            // Remove empty message on first log
+            const emptyMsg = consoleOutput.querySelector('.empty-console');
+            if (emptyMsg) {
+                emptyMsg.remove();
+            }
+
+            // Add new line
+            const line = document.createElement('div');
+            line.className = 'log-line';
+            line.textContent = '> ' + text;
+            consoleOutput.appendChild(line);
+
+            // Update count
+            messageCount++;
+            countDisplay.textContent = messageCount;
+
+            // Scroll to bottom
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+
+            // Also log to real console
+            console.log(text);
+        }
+
+        function logSimple() {
+            const message = getMessage();
+            addToConsole(message);
+        }
+
+        function logWithLabel() {
+            const message = getMessage();
+            addToConsole('Message: ' + message);
+        }
+
+        function logMultiple() {
+            const message = getMessage();
+            addToConsole('1: ' + message + ' 2: ' + message);
+        }
+
+        function logRobot() {
+            const message = getMessage();
+            addToConsole('Robot: ' + message + ' Energy: 100');
+        }
+
+        function clearConsole() {
+            const consoleOutput = document.getElementById('console-output');
+            const countDisplay = document.getElementById('message-count');
+
+            consoleOutput.innerHTML = '<div class="empty-console">Your messages will appear here...</div>';
+            messageCount = 0;
+            countDisplay.textContent = '0';
+        }
+
+        // Allow Enter key to log
+        document.getElementById('message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                logSimple();
+            }
+        });
+    </script>
+</body>
+</html>
