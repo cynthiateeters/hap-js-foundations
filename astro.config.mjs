@@ -5,6 +5,15 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   // Update this to your deployment URL
   site: 'https://example.com',
+  // Serve static files from public directory
+  publicDir: 'public',
+  vite: {
+    server: {
+      fs: {
+        allow: ['..']
+      }
+    }
+  },
   build: {
     assets: 'assets'
   },

@@ -1,0 +1,496 @@
+---
+/**
+ * Robot ID Card Demo
+ * Interactive demonstration of JavaScript concepts from the HAP Learning Lab
+ */
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot ID Card - HAP's Demo</title>
+    <style>
+        /**
+         * Robot ID Card Demo - Styles
+         * All colors use HSL format per project standards
+         */
+
+        /* CSS Custom Properties (Theme) */
+        :root {
+            /* HAP Theme Colors */
+            --hap-orange: hsl(32, 76%, 63%);
+            --hap-orange-dark: hsl(32, 76%, 45%);
+            --hap-orange-light: hsl(32, 76%, 85%);
+
+            /* Neutrals */
+            --bg-dark: hsl(220, 13%, 18%);
+            --bg-card: hsl(220, 13%, 95%);
+            --text-dark: hsl(220, 13%, 20%);
+            --text-light: hsl(220, 13%, 96%);
+            --text-muted: hsl(220, 10%, 50%);
+
+            /* Status Colors */
+            --energy-high: hsl(142, 71%, 45%);
+            --energy-medium: hsl(45, 93%, 47%);
+            --energy-low: hsl(0, 84%, 60%);
+
+            /* Borders and Shadows */
+            --border-color: hsl(220, 13%, 80%);
+            --shadow-color: hsl(220, 13%, 10%, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.5rem;
+            color: var(--hap-orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .robot-card {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px var(--shadow-color);
+            max-width: 400px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--hap-orange), var(--hap-orange-dark));
+            color: var(--text-light);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-header .robot-icon {
+            font-size: 1.75rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .card-section {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-section:last-child {
+            border-bottom: none;
+        }
+
+        .card-section h3 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.4rem 0;
+            color: var(--text-dark);
+        }
+
+        .info-row .label {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-row .value {
+            font-weight: 600;
+            color: var(--hap-orange-dark);
+        }
+
+        .energy-container {
+            margin-top: 0.5rem;
+        }
+
+        .energy-bar-track {
+            background-color: hsl(220, 13%, 88%);
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .energy-bar-fill {
+            height: 100%;
+            background-color: var(--energy-high);
+            border-radius: 10px;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            color: var(--text-dark);
+        }
+
+        .status-row .icon {
+            font-size: 1.1rem;
+        }
+
+        .status-row .text {
+            font-weight: 500;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            background-color: hsl(220, 13%, 92%);
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-task {
+            background-color: var(--hap-orange);
+            color: var(--text-light);
+        }
+
+        .btn-task:hover {
+            background-color: var(--hap-orange-dark);
+        }
+
+        .btn-rest {
+            background-color: hsl(210, 70%, 50%);
+            color: var(--text-light);
+        }
+
+        .btn-rest:hover {
+            background-color: hsl(210, 70%, 40%);
+        }
+
+        .console-section {
+            margin-top: 2rem;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .console-section h3 {
+            color: var(--hap-orange);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .console-output {
+            background-color: hsl(220, 13%, 12%);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            color: hsl(120, 100%, 75%);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .console-output .log-line {
+            padding: 0.2rem 0;
+            border-bottom: 1px solid hsl(220, 13%, 20%);
+        }
+
+        .console-output .log-line:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+
+            .card-header {
+                padding: 1rem;
+            }
+
+            .card-section {
+                padding: 1rem;
+            }
+
+            .card-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!--
+    HAP Educational Content © 2026 Cynthia Teeters. All rights reserved.
+    HyBit A. ProtoBot (HAP) character and the apprentice learning methodology are proprietary educational innovations.
+    -->
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <h1>HAP's Robot ID Card Demo</h1>
+        <p>See variables, operators, and helper functions in action!</p>
+    </header>
+
+    <!-- Robot ID Card -->
+    <main class="robot-card">
+        <!-- Card Header -->
+        <div class="card-header">
+            <span class="robot-icon">🤖</span>
+            <h2>ROBOT ID CARD</h2>
+        </div>
+
+        <!-- Identity Section (const values - facts) -->
+        <section class="card-section">
+            <h3>Identity</h3>
+            <div class="info-row">
+                <span class="label">📛 Name</span>
+                <span class="value" id="robot-name">---</span>
+            </div>
+            <div class="info-row">
+                <span class="label">🔧 Model</span>
+                <span class="value" id="robot-model">---</span>
+            </div>
+            <div class="info-row">
+                <span class="label">📅 Created</span>
+                <span class="value" id="robot-year">---</span>
+            </div>
+        </section>
+
+        <!-- Status Section (let values - change) -->
+        <section class="card-section">
+            <h3>Current Status</h3>
+            <div class="info-row">
+                <span class="label">⚡ Energy</span>
+                <span class="value"><span id="energy-level">---</span>/100</span>
+            </div>
+            <div class="energy-container">
+                <div class="energy-bar-track">
+                    <div class="energy-bar-fill" id="energy-bar" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="info-row">
+                <span class="label">✓ Tasks Done</span>
+                <span class="value" id="tasks-done">---</span>
+            </div>
+            <div class="status-row">
+                <span class="icon">📊</span>
+                <span class="text" id="status-message">Loading...</span>
+            </div>
+        </section>
+
+        <!-- Dynamic Section (helper functions) -->
+        <section class="card-section">
+            <h3>Today's Stats</h3>
+            <div class="info-row">
+                <span class="label">🎲 Challenge Level</span>
+                <span class="value" id="challenge-number">?</span>
+            </div>
+            <div class="info-row">
+                <span class="label">😊 Mood</span>
+                <span class="value" id="current-mood">---</span>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <div class="card-actions">
+            <button class="btn btn-task" onclick="completeTask()">Complete Task</button>
+            <button class="btn btn-rest" onclick="takeRest()">Rest</button>
+        </div>
+    </main>
+
+    <!-- Console Output -->
+    <aside class="console-section">
+        <h3>Console Output</h3>
+        <div class="console-output" id="console-output">
+            <!-- Log messages appear here -->
+        </div>
+    </aside>
+
+    <script is:inline>
+        // ============================================================
+        // HELPER FUNCTIONS (Grace's scaffolding tools)
+        // ============================================================
+
+        function randomBetween(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function coinFlip() {
+            return Math.random() < 0.5;
+        }
+
+        function choose(condition, ifTrue, ifFalse) {
+            return condition ? ifTrue : ifFalse;
+        }
+
+        function updateDisplay() {
+            // Identity elements (const values)
+            const nameEl = document.getElementById('robot-name');
+            const modelEl = document.getElementById('robot-model');
+            const yearEl = document.getElementById('robot-year');
+
+            // Status elements (let values)
+            const energyEl = document.getElementById('energy-level');
+            const energyBarEl = document.getElementById('energy-bar');
+            const tasksEl = document.getElementById('tasks-done');
+            const statusEl = document.getElementById('status-message');
+            const challengeEl = document.getElementById('challenge-number');
+            const moodEl = document.getElementById('current-mood');
+
+            // Update identity (const values)
+            if (nameEl) nameEl.textContent = robotName;
+            if (modelEl) modelEl.textContent = modelNumber;
+            if (yearEl) yearEl.textContent = creationYear;
+
+            // Update status (let values)
+            if (energyEl) {
+                energyEl.textContent = energyLevel;
+                if (energyBarEl) {
+                    energyBarEl.style.width = energyLevel + '%';
+                    if (energyLevel > 50) {
+                        energyBarEl.style.backgroundColor = 'hsl(142, 71%, 45%)';
+                    } else if (energyLevel > 25) {
+                        energyBarEl.style.backgroundColor = 'hsl(45, 93%, 47%)';
+                    } else {
+                        energyBarEl.style.backgroundColor = 'hsl(0, 84%, 60%)';
+                    }
+                }
+            }
+            if (tasksEl) tasksEl.textContent = tasksDone;
+            if (statusEl) statusEl.textContent = statusMessage;
+            if (challengeEl) challengeEl.textContent = todaysChallenge;
+            if (moodEl) moodEl.textContent = currentMood;
+        }
+
+        function logToConsole(message) {
+            console.log(message);
+            const consoleOutput = document.getElementById('console-output');
+            if (consoleOutput) {
+                const line = document.createElement('div');
+                line.className = 'log-line';
+                line.textContent = '> ' + message;
+                consoleOutput.appendChild(line);
+                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+            }
+        }
+
+        // ============================================================
+        // ROBOT FACTS (const - these never change)
+        // ============================================================
+        const robotName = "HyBit A. ProtoBot";
+        const modelNumber = "HAP-7000";
+        const creationYear = 2024;
+
+        // ============================================================
+        // ROBOT STATUS (let - these change during operation)
+        // ============================================================
+        let energyLevel = 100;
+        let tasksDone = 0;
+        let statusMessage = "Ready to learn!";
+
+        // ============================================================
+        // DYNAMIC VALUES (using helper functions)
+        // ============================================================
+        let todaysChallenge = randomBetween(1, 10);
+        let currentMood = choose(energyLevel > 50, "Energized!", "Need rest...");
+
+        // ============================================================
+        // COMPLETE TASK FUNCTION
+        // ============================================================
+        function completeTask() {
+            if (energyLevel < 15) {
+                statusMessage = "Too tired! Need rest first.";
+                updateDisplay();
+                logToConsole("Cannot complete task - energy too low!");
+                return;
+            }
+
+            const energyCost = 15;
+            energyLevel = energyLevel - energyCost;
+            tasksDone = tasksDone + 1;
+            todaysChallenge = randomBetween(1, 10);
+            currentMood = choose(energyLevel > 50, "Energized!", "Getting tired...");
+            statusMessage = `Completed task #${tasksDone}!`;
+            updateDisplay();
+            logToConsole(`Task completed! Energy: ${energyLevel}, Tasks: ${tasksDone}`);
+        }
+
+        // ============================================================
+        // REST FUNCTION
+        // ============================================================
+        function takeRest() {
+            const restAmount = 25;
+            energyLevel = energyLevel + restAmount;
+            if (energyLevel > 100) {
+                energyLevel = 100;
+            }
+            currentMood = choose(energyLevel > 50, "Energized!", "Recovering...");
+            statusMessage = "Feeling refreshed!";
+            updateDisplay();
+            logToConsole(`Rested! Energy restored to: ${energyLevel}`);
+        }
+
+        // ============================================================
+        // INITIALIZATION
+        // ============================================================
+        logToConsole("=== Robot ID Card ===");
+        logToConsole(`Name: ${robotName}`);
+        logToConsole(`Model: ${modelNumber}`);
+        logToConsole(`Energy: ${energyLevel}`);
+        logToConsole(`Challenge: ${todaysChallenge}`);
+        logToConsole("Ready to learn!");
+        updateDisplay();
+    </script>
+</body>
+</html>
