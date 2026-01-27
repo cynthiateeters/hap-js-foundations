@@ -1,0 +1,500 @@
+---
+/**
+ * Station 5 - Making Things Happen with Operators
+ *
+ * ============================================================
+ * LEARNING INTENT:
+ * ============================================================
+ * - Primary concept: Operators let you do math and ask questions about your data
+ * - Supporting concepts: arithmetic, comparison, = vs ===, helper functions
+ * - Explicit non-goals: Logical operators (&&, ||), bitwise operators
+ *
+ * ============================================================
+ * CODE EXAMPLE ROLE: Illustrative
+ * ============================================================
+ * Shows operators in action with the Robot ID Card
+ */
+
+import StationLayout from '../../layouts/StationLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const introContent = `
+    <p><strong>Welcome to Station 5!</strong> I wrote <code>if (score = 100)</code> and my code
+    acted like everyone was a winner. Even when they weren't.</p>
+    <p class="mt-1">I stared at it for ages. The logic seemed right. But one tiny character
+    was wrong, and it broke everything.</p>
+    <p class="mt-1">Prof. Teeters noticed my frustration. "Read it out loud," she said.
+    "Is score <em>equal to</em> 100, or is score <em>getting</em> 100?"</p>
+    <p class="mt-1">That's when I realized: <code>=</code> assigns a value, but <code>===</code>
+    compares values. One character made all the difference.</p>
+    <p class="mt-1">Let me show you how operators became my way of having a conversation
+    with my data... 🟠</p>
+`;
+
+const codeArithmetic = `// Arithmetic operators - doing math
+let energyLevel = 100;
+const energyCost = 15;
+
+energyLevel = energyLevel - energyCost;  // Subtraction: 100 - 15 = 85
+console.log(energyLevel);  // 85
+
+let tasksDone = 0;
+tasksDone = tasksDone + 1;  // Addition: 0 + 1 = 1
+console.log(tasksDone);     // 1
+
+// Other arithmetic operators
+console.log(10 * 3);   // Multiplication: 30
+console.log(20 / 4);   // Division: 5
+console.log(17 % 5);   // Remainder (modulo): 2 (17 ÷ 5 = 3 remainder 2)`;
+
+const codeComparison = `// Comparison operators - asking questions
+const energyLevel = 85;
+
+console.log(energyLevel > 50);   // Is 85 greater than 50? true
+console.log(energyLevel < 50);   // Is 85 less than 50? false
+console.log(energyLevel >= 85);  // Is 85 greater than or equal to 85? true
+console.log(energyLevel <= 100); // Is 85 less than or equal to 100? true
+console.log(energyLevel === 85); // Is 85 strictly equal to 85? true
+console.log(energyLevel !== 100); // Is 85 not equal to 100? true`;
+
+const codeAssignVsCompare = `// THE BIG MISTAKE: = vs ===
+
+// = assigns a value (puts something in the box)
+let score = 100;  // score GETS 100
+
+// === compares values (asks a question)
+console.log(score === 100);  // Is score equal to 100? true
+
+// The bug I made:
+// if (score = 100)  // ❌ This ASSIGNS 100 to score!
+// if (score === 100)  // ✅ This COMPARES score to 100
+
+// Prof. Teeters' rule: "Always use triple equals for comparison.
+// Double equals does type coercion, and that's a conversation for another day."`;
+
+const codeHelperFunctions = `// Grace provided these helper functions
+// "You need not understand the implementation. That lesson comes later."
+
+// Random number between min and max (inclusive)
+const todaysChallenge = randomBetween(1, 10);
+console.log(todaysChallenge);  // Could be 1, 2, 3... up to 10
+
+// Random true or false (like flipping a coin)
+const isLucky = coinFlip();
+console.log(isLucky);  // true or false
+
+// Choose between two values based on a condition
+const currentMood = choose(
+    energyLevel > 50,      // condition to check
+    "Feeling good!",       // value if true
+    "Need rest..."         // value if false
+);
+console.log(currentMood);  // Depends on energyLevel!`;
+
+const codeRobotCard = `// Putting it all together for my Robot ID Card
+let energyLevel = 100;
+let tasksDone = 0;
+
+// Complete a task
+const energyCost = 15;
+energyLevel = energyLevel - energyCost;  // Now 85
+tasksDone = tasksDone + 1;               // Now 1
+
+// Today's random challenge
+const todaysChallenge = randomBetween(1, 10);
+
+// Mood based on energy
+const currentMood = choose(
+    energyLevel > 50,
+    "Feeling good!",
+    "Need rest..."
+);
+
+// Display values
+console.log("Energy:", energyLevel);        // 85
+console.log("Tasks:", tasksDone);           // 1
+console.log("Challenge:", todaysChallenge); // Random 1-10
+console.log("Mood:", currentMood);          // "Feeling good!"`;
+
+const codeTypeConversion = `// Type conversion for display
+const energyLevel = 85;
+
+// String() converts a number to text
+const energyDisplay = String(energyLevel) + "%";
+console.log(energyDisplay);  // "85%"
+
+// Number() converts text to a number (we saw this in Station 4)
+const userInput = "42";
+const actualNumber = Number(userInput);
+console.log(actualNumber + 8);  // 50 (math works!)`;
+---
+
+<StationLayout
+    stationNumber={5}
+    title="Making Things Happen with Operators"
+    subtitle="Math, comparisons, and asking questions"
+    description="Learn JavaScript operators for arithmetic and comparisons. Master the difference between = and ===, and use helper functions for your Robot ID Card."
+    avatarImage="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_200,c_limit/v1759495998/hap-laptop_xiewar.jpg"
+    avatarAlt="HAP working with operators on a laptop"
+    introContent={introContent}
+    ogImage="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_1200,c_fill,g_auto/v1759495998/hap-laptop_xiewar.jpg"
+    nextStationTitle="AI as Your Study Partner"
+    footerReminder="= assigns, === compares. Read comparisons out loud to catch mistakes!"
+    labName="JavaScript Foundations"
+>
+
+    <!-- ============================================================
+         SECTION 1: What You'll Learn
+         ============================================================ -->
+    <section class="content-section">
+        <h2 class="section-heading-centered">What You'll Learn at This Station</h2>
+
+        <div class="intro-box">
+            <p><strong>HAP's Discovery:</strong> Operators are how I make things happen in my code.
+            Arithmetic operators do math. Comparison operators ask yes/no questions about my data.
+            And the difference between <code>=</code> and <code>===</code> is crucial!
+            Here are the three key insights:</p>
+        </div>
+
+        <div class="overview-grid mt-2">
+            <div class="insight-card">
+                <h3><span class="insight-icon">🔢</span> Arithmetic</h3>
+                <p class="stat-large">+ - * / %</p>
+                <p>Math operators for calculations. Addition, subtraction, multiplication,
+                division, and remainder (modulo).</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">❓</span> Comparison</h3>
+                <p class="stat-large stat-teal">=== !== > <</p>
+                <p>Ask questions about your data. Is this bigger? Are these equal?
+                Results are always <code>true</code> or <code>false</code>.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">⚠️</span> = vs ===</h3>
+                <p class="stat-large stat-brown">Critical!</p>
+                <p><code>=</code> assigns a value. <code>===</code> compares values.
+                Mix them up and your code breaks in confusing ways.</p>
+            </div>
+        </div>
+
+        <div class="hap-note-callout">
+            <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-broke-things_qtbum4.jpg"
+                alt="HAP surrounded by tangled code with an 'oops' expression"
+                width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+            <div class="hap-note-content">
+                <h3>HAP's Confession:</h3>
+                <ul>
+                    <li>I used <code>=</code> when I meant <code>===</code>. One assigns, the other compares.
+                    That single character difference broke my entire program!</li>
+                    <li>I forgot that comparison operators return booleans. <code>5 > 3</code> doesn't
+                    give you a number—it gives you <code>true</code>!</li>
+                    <li>I tried to use <code>==</code> (double equals) and got weird results.
+                    Prof. Teeters said "Always use triple equals. Trust me on this one."</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2: Arithmetic Operators
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Arithmetic Operators — Doing Math</h2>
+
+            <p class="mb-2">These operators work just like math class, with one addition:
+            the <code>%</code> operator gives you the remainder after division.</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Math with my Robot ID Card:</div>
+                <CodeBlock code={codeArithmetic} lang="javascript" />
+                <p class="code-comment mt-1">Notice how I update <code>energyLevel</code> by using
+                its current value in the calculation. The right side is computed first,
+                then assigned to the left side.</p>
+            </div>
+
+            <div class="analysis-grid mt-2">
+                <div class="analysis-point">
+                    <h3>+ Addition</h3>
+                    <p><code>5 + 3 = 8</code>. Also concatenates strings
+                    (which can cause surprises with mixed types!).</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>- Subtraction</h3>
+                    <p><code>10 - 4 = 6</code>. Only works with numbers.
+                    Great for decreasing values like energy.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>* Multiplication</h3>
+                    <p><code>6 * 7 = 42</code>. Use the asterisk,
+                    not <code>x</code> like in math class.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>% Remainder</h3>
+                    <p><code>17 % 5 = 2</code>. What's left over after division.
+                    Useful for checking odd/even or wrapping values.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 3: Comparison Operators
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Comparison Operators — Asking Questions</h2>
+
+            <p class="mb-2">Comparison operators ask yes/no questions about your data.
+            The answer is always a boolean: <code>true</code> or <code>false</code>.</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Asking questions about energy:</div>
+                <CodeBlock code={codeComparison} lang="javascript" />
+                <p class="code-comment mt-1">Each comparison returns <code>true</code> or <code>false</code>.
+                These are perfect for making decisions in your code!</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>🟠 HAP's Tip:</h3>
+                    <p>Read comparisons out loud! <code>energyLevel > 50</code> becomes
+                    "Is energyLevel greater than 50?" If you can ask it as a yes/no question,
+                    it's a comparison.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 4: The = vs === Trap
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>The Critical Difference: = vs ===</h2>
+
+            <p class="mb-2">This is the mistake that cost me hours of debugging.
+            These two operators look similar but do completely different things:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Assignment vs comparison:</div>
+                <CodeBlock code={codeAssignVsCompare} lang="javascript" />
+                <p class="code-comment mt-1">Prof. Teeters' advice: "Always use triple equals for comparison.
+                Double equals does type coercion, and that's a conversation for another day."</p>
+            </div>
+
+            <div class="analysis-grid mt-2">
+                <div class="analysis-point">
+                    <h3>= (Single)</h3>
+                    <p><strong>Assigns</strong> a value. "x gets 5."
+                    Puts something in the box.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>=== (Triple)</h3>
+                    <p><strong>Compares</strong> values strictly. "Is x equal to 5?"
+                    Returns true or false.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>== (Double)</h3>
+                    <p>Compares with type coercion. Can cause surprises.
+                    <strong>Avoid for now.</strong></p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>!== (Not equal)</h3>
+                    <p>"Is x NOT equal to 5?" The opposite of ===.
+                    Also uses strict comparison.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 5: Grace's Helper Functions
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Grace's Helper Functions</h2>
+
+            <p class="mb-2">One day, a new file appeared in my project: <code>helpers.js</code>.
+            Grace had provided tools to help me build my Robot ID Card.</p>
+
+            <div class="hap-note-callout">
+                <div class="hap-note-content">
+                    <h3>Grace Hopper Explains:</h3>
+                    <p>"I have provided tools. Use <code>randomBetween(1, 10)</code> for your daily challenge.
+                    Use <code>choose(condition, ifTrue, ifFalse)</code> for your mood.
+                    You need not understand the implementation. That lesson comes later."</p>
+                </div>
+            </div>
+
+            <div class="prompt-box mt-2">
+                <div class="prompt-label">Using the helper functions:</div>
+                <CodeBlock code={codeHelperFunctions} lang="javascript" />
+                <p class="code-comment mt-1">These functions handle complexity we haven't learned yet.
+                Focus on <em>using</em> them—understanding <em>how</em> they work comes later!</p>
+            </div>
+
+            <div class="analysis-grid mt-2">
+                <div class="analysis-point">
+                    <h3>randomBetween(min, max)</h3>
+                    <p>Returns a random whole number between min and max, inclusive.
+                    Great for unpredictable values!</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>coinFlip()</h3>
+                    <p>Returns <code>true</code> or <code>false</code> randomly.
+                    Like flipping a coin—50/50 chance.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>choose(condition, a, b)</h3>
+                    <p>If condition is true, returns a. Otherwise returns b.
+                    Simple decision-making without if/else!</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>updateDisplay()</h3>
+                    <p>Updates the Robot ID Card to show current values.
+                    Call this after changing variables!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 6: Putting It All Together
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Putting It All Together</h2>
+
+            <p class="mb-2">Here's how all these operators work together in my Robot ID Card:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">The complete Robot ID Card logic:</div>
+                <CodeBlock code={codeRobotCard} lang="javascript" />
+                <p class="code-comment mt-1">Arithmetic changes values. Comparison determines mood.
+                Helper functions add randomness. It all works together!</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-brain-explodes_wu0or8.jpg"
+                    alt="HAP having a breakthrough moment"
+                    width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+                <div class="hap-note-content">
+                    <h3>Breakthrough Moment!</h3>
+                    <p>Operators aren't just math. They're how I ask questions about my data.
+                    Is this bigger? Are these the same? That's when JavaScript started feeling
+                    like a conversation with my program!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 7: Experimentation
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>The Joy of Experimentation</h2>
+
+            <p class="mb-2">I changed <code>energyLevel</code> from <code>100</code> to <code>50</code>
+            and called <code>updateDisplay()</code>. The card updated! I changed it to <code>9000</code>
+            just to see what would happen. The card showed <code>9000%</code>. Way too much energy
+            for any robot, but it <em>worked</em>.</p>
+
+            <p>Prof. Teeters walked by. "Having fun?"</p>
+
+            <p>"I made myself have 9000% energy."</p>
+
+            <p>"Good. Now make yourself have negative energy and see what happens." 🟠</p>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>🟠 Try It Yourself:</h3>
+                    <p>Change values and see what happens! What if energy is 0? What if it's -50?
+                    What if you complete 1000 tasks? Experimentation is how you really learn
+                    what code does. Break things, then figure out why!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 8: Type Conversion
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Type Conversion for Display</h2>
+
+            <p class="mb-2">Sometimes you need to convert between types.
+            We saw <code>Number()</code> in Station 4—here's its partner, <code>String()</code>:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Converting for display:</div>
+                <CodeBlock code={codeTypeConversion} lang="javascript" />
+                <p class="code-comment mt-1"><code>String()</code> converts numbers to text.
+                <code>Number()</code> converts text to numbers. Use the right one for the job!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION: Quick Reference
+         ============================================================ -->
+    <section class="content-section">
+        <div class="tips-container">
+            <h2 class="section-heading-centered">🎓 Operators Quick Reference</h2>
+
+            <div class="tip-card">
+                <div class="tip-number">1</div>
+                <div>
+                    <h3>Arithmetic: + - * / %</h3>
+                    <p>Math operations. Remember <code>%</code> gives the remainder, not percentage!</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">2</div>
+                <div>
+                    <h3>Comparison: === !== > < >= <=</h3>
+                    <p>Ask questions, get booleans. Always use <code>===</code> for equality, not <code>==</code>.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">3</div>
+                <div>
+                    <h3>= assigns, === compares</h3>
+                    <p><code>x = 5</code> puts 5 in x. <code>x === 5</code> asks "is x equal to 5?"</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">4</div>
+                <div>
+                    <h3>Helper functions</h3>
+                    <p><code>randomBetween(min, max)</code>, <code>coinFlip()</code>, <code>choose(condition, a, b)</code></p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">5</div>
+                <div>
+                    <h3>Read comparisons out loud</h3>
+                    <p>"Is energyLevel greater than 50?" If it's a yes/no question, it's a comparison.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</StationLayout>

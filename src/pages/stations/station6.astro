@@ -1,0 +1,582 @@
+---
+/**
+ * Station 6 - AI as Your Study Partner
+ *
+ * For JavaScript beginners, this station focuses on using AI to LEARN,
+ * not to generate code. The emphasis is on understanding, not copying.
+ */
+
+import StationLayout from '../../layouts/StationLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const introContent = `
+    <p><strong>Welcome to Station 6!</strong> I wondered—if AI can write code, why am I learning
+    this at all? I could ask it to build my whole Robot ID Card!</p>
+    <p class="mt-1">So I tried it. I asked an AI to "fix my code" without understanding what was wrong.
+    It fixed it. Beautiful! I shipped it. But the next time I hit a similar problem, I was just as lost.
+    I hadn't learned anything—I'd just outsourced thinking.</p>
+    <p class="mt-1">Prof. Teeters sat me down. "HAP, AI is a study partner, not a substitute for your brain.
+    Use it to <em>understand</em>, not to avoid understanding. Ask it 'why does this work?'
+    not just 'make this work.'"</p>
+    <p class="mt-1">That changed everything. Let me show you how to use AI as a learning tool,
+    not a crutch... 🟠</p>
+`;
+
+const codeVaguePrompt = `"Fix my code"`;
+
+const codeGoodPrompt = `I'm learning JavaScript and my code isn't working as expected.
+
+Here's what I wrote:
+const score = "5";
+const bonus = 10;
+console.log(score + bonus);
+
+I expected: 15 (addition)
+I got: "510" (they got combined as text)
+
+Can you explain what I'm misunderstanding about how + works?`;
+
+const codeErrorPrompt = `I'm getting this error and don't understand it:
+
+Error: "Uncaught TypeError: Cannot read properties of undefined"
+
+Here's my code:
+const robot = {};
+console.log(robot.name.length);
+
+What does this error mean, and why is it happening?`;
+
+const codeExplainPrompt = `I'm learning about variables in JavaScript.
+
+This code works:
+let energyLevel = 100;
+energyLevel = 85;
+
+But this code gives an error:
+const robotName = "HAP";
+robotName = "HyBit";
+
+Can you explain WHY const behaves differently from let?
+I want to understand the concept, not just memorize the rule.`;
+
+const codeWhyPrompt = `This code works, but I don't understand WHY:
+
+const greeting = \`Hello, \${robotName}!\`;
+
+Why do backticks work differently than regular quotes?
+What is the \${} doing? I want to understand the concept.`;
+---
+
+<StationLayout
+    stationNumber={6}
+    title="AI as Your Study Partner"
+    subtitle="Learning WITH AI, not copying FROM AI"
+    description="Learn to use AI as a study partner for JavaScript. Ask better questions, understand errors, and build real knowledge—not just working code."
+    avatarImage="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_200,c_limit/v1759495998/hap-laptop_xiewar.jpg"
+    avatarAlt="HAP learning with AI assistance"
+    introContent={introContent}
+    ogImage="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_1200,c_fill,g_auto/v1759495998/hap-laptop_xiewar.jpg"
+    footerReminder="The goal isn't working code—it's understanding WHY it works!"
+    labName="JavaScript Foundations"
+>
+
+    <!-- ============================================================
+         SECTION 1: What You'll Learn
+         ============================================================ -->
+    <section class="content-section">
+        <h2 class="section-heading-centered">What You'll Learn</h2>
+
+        <div class="overview-grid mt-2">
+            <div class="insight-card">
+                <h3><span class="insight-icon">🎓</span> AI for Understanding</h3>
+                <p class="stat-large">Learn, don't copy</p>
+                <p><strong>AI explains concepts.</strong> When I stopped asking AI to "fix my code" and started asking
+                "why does this happen?", I actually learned. The difference is huge—understanding
+                sticks, but copied code evaporates.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">🔍</span> Better Questions</h3>
+                <p class="stat-large stat-teal">Context matters</p>
+                <p><strong>Show your work.</strong> Vague questions get vague answers. When I include
+                what I expected, what I got, and what I tried, AI can actually help me understand
+                the gap in my knowledge.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">✅</span> Verify Everything</h3>
+                <p class="stat-large stat-brown">You own the code</p>
+                <p><strong>AI makes mistakes.</strong> Even when AI explains something, I verify it against
+                what I learned in Stations 1-5. If I can't explain why the answer works,
+                I don't really understand it yet.</p>
+            </div>
+        </div>
+
+        <div class="hap-note-callout">
+            <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-broke-things_qtbum4.jpg"
+                alt="HAP surrounded by tangled code with an 'oops' expression"
+                width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+            <div class="hap-note-content">
+                <h3>HAP's Confession: I Outsourced My Brain</h3>
+                <p>I asked AI to "fix my code" without understanding the problem. It fixed it.
+                I felt smart for about ten minutes.</p>
+                <p class="mt-1">Then I hit a similar problem. I was completely lost again.
+                I hadn't learned anything—I'd just borrowed someone else's thinking.</p>
+                <p class="mt-1">Prof. Teeters helped me see: working code isn't the goal.
+                <em>Understanding</em> is the goal. Now I ask AI to explain, not to fix.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2: What AI Can and Can't Do
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>What AI Can and Can't Do for Learning</h2>
+            <p class="mb-2">I had unrealistic expectations about AI. I thought it would be like having
+            Prof. Teeters available 24/7. It's not—but it CAN be a useful study partner
+            when you know its strengths and weaknesses.</p>
+
+            <div class="analysis-grid mt-2">
+                <div class="analysis-point">
+                    <h3>AI Excels At</h3>
+                    <ul class="mt-1">
+                        <li><strong>Explaining error messages:</strong> It can decode cryptic errors into plain English</li>
+                        <li><strong>Showing examples:</strong> It can demonstrate concepts with multiple examples</li>
+                        <li><strong>Answering "why" questions:</strong> It can explain the reasoning behind rules</li>
+                        <li><strong>Suggesting what to try:</strong> It can offer debugging approaches</li>
+                        <li><strong>Defining terms:</strong> It can clarify vocabulary you don't know</li>
+                        <li><strong>Patience:</strong> It never gets tired of re-explaining things</li>
+                    </ul>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>AI Struggles With</h3>
+                    <ul class="mt-1">
+                        <li><strong>Your specific context:</strong> It doesn't know your project or goals</li>
+                        <li><strong>What you already know:</strong> It can't gauge your level without you telling it</li>
+                        <li><strong>Being consistently correct:</strong> It sometimes gives confident wrong answers</li>
+                        <li><strong>Knowing what you need to learn:</strong> Only you know your knowledge gaps</li>
+                        <li><strong>Teaching the "feel" of coding:</strong> Experience comes from doing, not reading</li>
+                        <li><strong>Replacing actual practice:</strong> Understanding isn't the same as skill</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="hap-note-callout mt-3">
+                <div class="hap-note-content">
+                    <h3>🟠 HAP's Realization</h3>
+                    <p>AI is like a very patient tutor who knows a lot but doesn't know YOU.
+                    It can explain anything—but it can't learn FOR you. The understanding
+                    has to happen in your head, not in the AI's response.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 3: Asking Good Questions
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>The Art of Asking Good Questions</h2>
+            <p class="mb-2">The quality of AI's help depends entirely on how you ask.
+            Vague questions get vague answers. Specific questions get useful learning.</p>
+
+            <h3 class="mt-3">❌ Vague Prompt (What I Used to Do)</h3>
+            <div class="warning-box mt-2">
+                <div class="prompt-box">
+                    <div class="prompt-label">Bad question:</div>
+                    <CodeBlock code={codeVaguePrompt} lang="text" />
+                </div>
+                <p class="mt-2"><strong>Why this fails:</strong></p>
+                <ul class="mt-1">
+                    <li>AI doesn't know what "fix" means to you</li>
+                    <li>AI doesn't know what behavior you expected</li>
+                    <li>AI will guess, and you won't learn anything</li>
+                    <li>You'll get code that works but you won't know why</li>
+                </ul>
+            </div>
+
+            <h3 class="mt-3">✅ Good Prompt (What I Do Now)</h3>
+            <div class="prompt-box mt-2">
+                <div class="prompt-label">Better question:</div>
+                <CodeBlock code={codeGoodPrompt} lang="text" />
+                <p class="code-comment mt-1"><strong>Why this works:</strong> I showed what I wrote,
+                what I expected, what I got, and asked for understanding—not just a fix.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 4: Understanding Error Messages
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Using AI to Understand Errors</h2>
+            <p class="mb-2">Error messages are confusing at first. AI can translate them into
+            plain English—if you ask the right way.</p>
+
+            <h3 class="mt-3">A Good Error-Understanding Prompt</h3>
+            <div class="prompt-box mt-2">
+                <div class="prompt-label">Asking about an error:</div>
+                <CodeBlock code={codeErrorPrompt} lang="text" />
+                <p class="code-comment mt-1">Notice: I'm not asking AI to fix it. I'm asking AI to
+                help me <em>understand</em> it. Once I understand, I can fix it myself!</p>
+            </div>
+
+            <div class="analysis-grid mt-3">
+                <div class="analysis-point">
+                    <h3>Include the Error</h3>
+                    <p>Copy the exact error message. Don't paraphrase—details matter.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Include Your Code</h3>
+                    <p>Show the code that caused the error. Context is everything.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Ask "What" and "Why"</h3>
+                    <p>What does this error mean? Why is it happening?</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Then Try to Fix It Yourself</h3>
+                    <p>Once you understand, attempt the fix. That's how learning happens!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 5: Learning Concepts with AI
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Learning Concepts with AI</h2>
+            <p class="mb-2">When you don't understand WHY something works, AI can explain the concept—
+            but you need to ask for understanding, not just answers.</p>
+
+            <h3 class="mt-3">Asking "Why" Questions</h3>
+            <div class="prompt-box mt-2">
+                <div class="prompt-label">Asking for conceptual understanding:</div>
+                <CodeBlock code={codeExplainPrompt} lang="text" />
+                <p class="code-comment mt-1">The key phrase: "I want to understand the concept,
+                not just memorize the rule." This tells AI what kind of help you need.</p>
+            </div>
+
+            <h3 class="mt-3">Understanding Code That Works</h3>
+            <div class="prompt-box mt-2">
+                <div class="prompt-label">When code works but you don't know why:</div>
+                <CodeBlock code={codeWhyPrompt} lang="text" />
+                <p class="code-comment mt-1">Working code you don't understand is technical debt.
+                Ask AI to explain it until you could teach it to someone else.</p>
+            </div>
+
+            <div class="hap-note-callout mt-3">
+                <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-brain-explodes_wu0or8.jpg"
+                    alt="HAP having a breakthrough moment"
+                    width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+                <div class="hap-note-content">
+                    <h3>Breakthrough Moment!</h3>
+                    <p>Now I use AI differently. When I'm stuck, I describe what I <em>think</em>
+                    should happen and what's actually happening. The conversation helps me learn.
+                    The goal isn't working code—it's understanding <em>why</em> it works!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 6: Verifying AI Responses
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Verifying AI Responses</h2>
+            <p class="mb-2">AI sometimes gives confident-sounding wrong answers. You MUST verify
+            what it tells you against what you've learned.</p>
+
+            <div class="analysis-grid mt-2">
+                <div class="analysis-point">
+                    <h3>Test the Code</h3>
+                    <p>If AI suggests code, run it! Does it actually work?
+                    Does it produce the results you expected?</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Check Against Your Notes</h3>
+                    <p>Does AI's explanation match what you learned in Stations 1-5?
+                    If not, investigate the difference.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Try to Explain It</h3>
+                    <p>Can you explain AI's answer in your own words?
+                    If not, you don't really understand it yet.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Ask Follow-Up Questions</h3>
+                    <p>If something doesn't make sense, ask AI to clarify.
+                    Keep asking until you truly understand.</p>
+                </div>
+            </div>
+
+            <div class="warning-box mt-3">
+                <h3>⚠️ AI Can Be Wrong</h3>
+                <p class="mt-1">I once asked AI about semicolons and it gave me advice that
+                contradicted what Grace Hopper taught me. AI was wrong! Always verify against
+                trusted sources—your course materials, documentation, and what you've tested yourself.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 7: Try It Yourself Challenge
+         ============================================================ -->
+    <section class="content-section">
+        <h2>Try It Yourself: AI Study Partner Challenge</h2>
+        <p class="mt-1">Practice using AI as a study partner with this challenge:</p>
+
+        <div class="prompt-box mt-2">
+            <h3>🎯 The Challenge</h3>
+            <p class="mt-1">You have this code that isn't working:</p>
+            <CodeBlock code={`const userName = "HAP";
+let greeting = "Hello, " + userName + "!";
+console.log(Greeting);  // Error!`} lang="javascript" />
+
+            <h4 class="mt-2">Your Mission:</h4>
+            <ol class="mt-1">
+                <li><strong>DON'T ask AI to fix it.</strong> That's the old way!</li>
+                <li><strong>Run the code</strong> and see the error message.</li>
+                <li><strong>Ask AI to explain</strong> what the error means and why it's happening.</li>
+                <li><strong>Try to fix it yourself</strong> based on what you learned.</li>
+                <li><strong>Verify your understanding</strong> by explaining why your fix works.</li>
+            </ol>
+
+            <p class="mt-2"><strong>Bonus:</strong> After fixing it, ask AI how you could write
+            the greeting using template literals (from Station 4) instead of concatenation.</p>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 8: HAP's Rules for Working with AI
+         ============================================================ -->
+    <section class="content-section">
+        <div class="tips-container">
+            <h2 class="section-heading-centered">HAP's Rules for Working with AI</h2>
+            <p class="mb-2">After learning the hard way, I developed these rules. Prof. Teeters approved them!</p>
+
+            <div class="tip-card">
+                <div class="tip-number">1</div>
+                <div>
+                    <h3>Ask for understanding, not fixes</h3>
+                    <p>Instead of "fix my code," ask "why isn't this working?" or "what am I misunderstanding?"
+                    You learn from understanding, not from copying.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">2</div>
+                <div>
+                    <h3>Show your work</h3>
+                    <p>Include your code, what you expected, and what you got. Good context leads to good help.
+                    Vague questions get vague answers.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">3</div>
+                <div>
+                    <h3>Verify everything</h3>
+                    <p>AI makes mistakes. Test every suggestion. Check against your course materials.
+                    If you can't explain why something works, you don't understand it yet.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">4</div>
+                <div>
+                    <h3>Try first, ask second</h3>
+                    <p>Struggle a bit before asking AI. The struggle is where learning happens!
+                    Use AI to get unstuck, not to skip the hard parts.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">5</div>
+                <div>
+                    <h3>Ask "why" not just "what"</h3>
+                    <p>Understanding WHY code works is more valuable than knowing WHAT code works.
+                    Always dig deeper than the surface answer.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">6</div>
+                <div>
+                    <h3>You own the code</h3>
+                    <p>Whether you wrote it or AI suggested it, YOU are responsible for it.
+                    Don't use code you don't understand.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 9: Better Prompt Patterns
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Better Prompt Patterns</h2>
+            <p class="mb-2">Here are templates for common learning situations:</p>
+
+            <div class="analysis-grid mt-2">
+                <div class="analysis-point">
+                    <h3>Instead of "Fix my code"</h3>
+                    <p>"I expected X but got Y. Here's my code. What am I misunderstanding?"</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Instead of "Write code that..."</h3>
+                    <p>"I'm trying to do X. I wrote this code but it returns undefined. Can you explain why?"</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Instead of copying the answer</h3>
+                    <p>"This solution works, but I don't understand why. Can you explain what each part does?"</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>When completely stuck</h3>
+                    <p>"I'm trying to [goal]. I've tried [approaches]. What concept am I missing?"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 10: When NOT to Use AI
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>When NOT to Use AI</h2>
+            <p class="mb-2">AI isn't always the right tool. Sometimes you need to struggle!</p>
+
+            <div class="analysis-grid mt-2">
+                <div class="analysis-point">
+                    <h3>When You Haven't Tried Yet</h3>
+                    <p><strong>Struggle first.</strong> The productive confusion of trying
+                    and failing is where real learning happens. Don't skip it!</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>When Taking Assessments</h3>
+                    <p><strong>That's cheating.</strong> Assessments measure YOUR understanding.
+                    Using AI defeats the purpose and leaves you unprepared.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>When Building Muscle Memory</h3>
+                    <p><strong>Practice makes permanent.</strong> Typing code yourself—even simple code—
+                    builds skills that reading AI answers never will.</p>
+                </div>
+            </div>
+
+            <div class="warning-box mt-3">
+                <h3>🟠 Prof. Teeters' Warning</h3>
+                <p class="mt-1"><strong>"Using AI to avoid thinking is like using a calculator
+                before you understand multiplication. You'll get answers, but you won't
+                understand math. And when the calculator isn't available, you'll be helpless."</strong></p>
+                <p class="mt-1">She told me this after I admitted to copying AI code without understanding.
+                I never made that mistake again.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 11: Quick Reference
+         ============================================================ -->
+    <section class="content-section">
+        <h2>Quick Reference: AI for JavaScript Learning</h2>
+        <p class="mt-1">When is AI helpful for learning JavaScript? Here's a quick guide:</p>
+
+        <div class="overview-grid mt-2">
+            <div class="insight-card">
+                <h3><span class="insight-icon">✅</span> Explaining errors</h3>
+                <p class="stat-large">Excellent</p>
+                <p><strong>Include:</strong> exact error, your code, what you expected</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">✅</span> Clarifying concepts</h3>
+                <p class="stat-large stat-teal">Excellent</p>
+                <p><strong>Ask:</strong> "Why does X work this way? I want to understand the concept."</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">⚠️</span> Writing code for you</h3>
+                <p class="stat-large stat-brown">Risky</p>
+                <p><strong>Better:</strong> Ask it to explain concepts, then write the code yourself</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">🛑</span> Replacing practice</h3>
+                <p class="stat-large">Not recommended</p>
+                <p><strong>Instead:</strong> Struggle, make mistakes, learn from them</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 12: Completion
+         ============================================================ -->
+    <section class="content-section">
+        <h2>Congratulations!</h2>
+        <p class="mt-1"><strong>You've completed all six stations of HAP's JavaScript Foundations Lab!</strong></p>
+
+        <div class="analysis-grid mt-2">
+            <div class="analysis-point">
+                <h3>What You've Learned</h3>
+                <ul class="mt-1">
+                    <li>Setting up your coding workbench</li>
+                    <li>JavaScript grammar (statements, semicolons, comments)</li>
+                    <li>Variables with const and let</li>
+                    <li>Data types (strings, numbers, booleans)</li>
+                    <li>Operators for math and comparisons</li>
+                    <li>Using AI as a study partner</li>
+                </ul>
+            </div>
+
+            <div class="analysis-point">
+                <h3>What You Built</h3>
+                <ul class="mt-1">
+                    <li>A mental model for how JavaScript works</li>
+                    <li>The foundation for your Robot ID Card</li>
+                    <li>Skills that transfer to any programming language</li>
+                    <li>A healthy relationship with AI tools</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="hap-note-callout mt-3">
+            <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-celebrating_bljvgl.jpg"
+                alt="HAP celebrating completion of all stations"
+                width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+            <div class="hap-note-content">
+                <h3>Prof. Teeters on Completing All Six Stations</h3>
+                <p><strong>"HAP, you've done something important here. You didn't just learn JavaScript syntax—
+                you learned how to learn."</strong></p>
+                <p class="mt-1">She smiled at my Robot ID Card displaying in the browser.
+                "Every expert was once a beginner who didn't give up. You've built a foundation.
+                Now build on it."</p>
+                <p class="mt-1">"The best code you'll ever write is the code you understand completely.
+                Keep asking 'why.' Keep experimenting. Keep breaking things and fixing them.
+                That's how every programmer grows." 🟠</p>
+            </div>
+        </div>
+    </section>
+
+</StationLayout>

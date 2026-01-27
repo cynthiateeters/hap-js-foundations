@@ -1,0 +1,391 @@
+---
+/**
+ * Station 4 - Types of Data
+ *
+ * ============================================================
+ * LEARNING INTENT:
+ * ============================================================
+ * - Primary concept: JavaScript has different types of data that behave differently
+ * - Supporting concepts: strings, numbers, booleans, typeof, template literals
+ * - Explicit non-goals: null, undefined, type coercion details, objects, arrays
+ *
+ * ============================================================
+ * CODE EXAMPLE ROLE: Diagnostic
+ * ============================================================
+ * Shows how typeof reveals data types and why it matters
+ */
+
+import StationLayout from '../../layouts/StationLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const introContent = `
+    <p><strong>Welcome to Station 4!</strong> I tried to add a number to some text and got
+    something completely unexpected.</p>
+    <p class="mt-1">Why did <code>'5' + 1</code> give me <code>'51'</code> instead of <code>6</code>?
+    I stared at the screen, utterly confused.</p>
+    <p class="mt-1">Grace Hopper overheard me muttering. "JavaScript is dynamically typed," she said
+    without turning around. "The language does not enforce type consistency. You must verify your assumptions."</p>
+    <p class="mt-1">That's when I discovered the <code>typeof</code> operator—my new best friend for
+    understanding what kind of data I'm actually working with.</p>
+    <p class="mt-1">Let me show you the three main types I use in my Robot ID Card... 🟠</p>
+`;
+
+const codeThreeTypes = `// The three data types I use most
+const robotName = "HyBit A. ProtoBot";   // string - text
+const creationYear = 2024;                // number - numeric value
+const isLearning = true;                  // boolean - true or false
+
+// Check your types with typeof!
+console.log(typeof robotName);     // "string"
+console.log(typeof creationYear);  // "number"
+console.log(typeof isLearning);    // "boolean"`;
+
+const codeStringTypes = `// Strings can use single quotes, double quotes, or backticks
+const name1 = 'HAP';           // single quotes
+const name2 = "HAP";           // double quotes - same thing!
+const name3 = \`HAP\`;           // backticks - special powers!
+
+// All three produce the same result
+console.log(name1 === name2);  // true
+console.log(name2 === name3);  // true`;
+
+const codeTemplateLiterals = `// The OLD way - awkward concatenation
+const oldGreeting = "Hello! I am " + robotName + ", created in " + creationYear + ".";
+
+// The NEW way - template literals (backticks + \${})
+const newGreeting = \`Hello! I am \${robotName}, created in \${creationYear}.\`;
+
+// Both produce: "Hello! I am HyBit A. ProtoBot, created in 2024."
+// But the template literal is SO much easier to read!`;
+
+const codeTypeTrap = `// The type trap I fell into
+const userInput = "5";    // This LOOKS like a number...
+const addedValue = 1;
+
+console.log(userInput + addedValue);  // "51" - string concatenation!
+console.log(typeof userInput);         // "string" - AH HA!
+
+// To fix it, convert the string to a number first
+console.log(Number(userInput) + addedValue);  // 6 - math!`;
+
+const codeBooleans = `// Booleans are yes/no, true/false questions
+const isLearning = true;
+const isExhausted = false;
+const hasEnoughEnergy = energyLevel > 50;  // true or false based on comparison
+
+console.log(typeof isLearning);      // "boolean"
+console.log(typeof hasEnoughEnergy); // "boolean"
+
+// Booleans help make decisions
+// (We'll use these more in Station 5!)`;
+---
+
+<StationLayout
+    stationNumber={4}
+    title="Types of Data"
+    subtitle="Strings, numbers, and booleans"
+    description="Learn the three main JavaScript data types: strings for text, numbers for math, and booleans for true/false. Master typeof and template literals."
+    avatarImage="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_200,c_limit/v1759495998/hap-laptop_xiewar.jpg"
+    avatarAlt="HAP studying data types on a laptop"
+    introContent={introContent}
+    ogImage="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_1200,c_fill,g_auto/v1759495998/hap-laptop_xiewar.jpg"
+    nextStationTitle="Making Things Happen with Operators"
+    footerReminder="When in doubt, use typeof! And template literals are your friend."
+    labName="JavaScript Foundations"
+>
+
+    <!-- ============================================================
+         SECTION 1: What You'll Learn
+         ============================================================ -->
+    <section class="content-section">
+        <h2 class="section-heading-centered">What You'll Learn at This Station</h2>
+
+        <div class="intro-box">
+            <p><strong>HAP's Discovery:</strong> Not all data is created equal! JavaScript has different
+            <em>types</em> of data, and they behave differently. I learned the hard way that
+            <code>"5"</code> (a string) and <code>5</code> (a number) are NOT the same thing.
+            Here are the three types I use most:</p>
+        </div>
+
+        <div class="overview-grid mt-2">
+            <div class="insight-card">
+                <h3><span class="insight-icon">📝</span> Strings</h3>
+                <p class="stat-large">"Text"</p>
+                <p>Any text wrapped in quotes. Single quotes, double quotes, or backticks.
+                Used for names, messages, and any textual data.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">🔢</span> Numbers</h3>
+                <p class="stat-large stat-teal">42</p>
+                <p>Numeric values for math. Integers like <code>100</code> or
+                decimals like <code>3.14</code>. No quotes around them!</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">✓✗</span> Booleans</h3>
+                <p class="stat-large stat-brown">true/false</p>
+                <p>Only two values: <code>true</code> or <code>false</code>.
+                Perfect for yes/no questions and conditions.</p>
+            </div>
+        </div>
+
+        <div class="hap-note-callout">
+            <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-broke-things_qtbum4.jpg"
+                alt="HAP surrounded by tangled code with an 'oops' expression"
+                width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+            <div class="hap-note-content">
+                <h3>HAP's Confession:</h3>
+                <ul>
+                    <li>I assumed <code>"5"</code> was a number because it <em>looked</em> like a number.
+                    But <code>typeof "5"</code> showed me it was a string. The quotes matter!</li>
+                    <li>I spent 20 minutes debugging why <code>"5" + 1</code> gave me <code>"51"</code>.
+                    Grace was right—I needed to verify my assumptions. 😳</li>
+                    <li>I kept forgetting that booleans don't have quotes. <code>"true"</code> is a string,
+                    but <code>true</code> (no quotes) is a boolean.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2: The Three Main Types
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>The Three Main Types</h2>
+
+            <p class="mb-2">Here's how I declare each type in my Robot ID Card.
+            Notice how <code>typeof</code> reveals what type each value actually is:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Strings, numbers, and booleans:</div>
+                <CodeBlock code={codeThreeTypes} lang="javascript" />
+                <p class="code-comment mt-1">The <code>typeof</code> operator is like asking JavaScript
+                "What kind of data is this?" It always tells you the truth!</p>
+            </div>
+
+            <div class="analysis-grid mt-2">
+                <div class="analysis-point">
+                    <h3>Strings for Text</h3>
+                    <p>Names, messages, labels—anything textual. Always wrapped in quotes
+                    (single, double, or backticks).</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Numbers for Math</h3>
+                    <p>Quantities, counts, measurements. NO quotes. JavaScript handles both
+                    integers and decimals as "number" type.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Booleans for Logic</h3>
+                    <p>Yes/no, on/off, true/false. Only two possible values.
+                    Great for conditions and flags.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>typeof for Checking</h3>
+                    <p>When confused, ask! <code>typeof myVariable</code> tells you exactly
+                    what type you're dealing with.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 3: Strings and Quotes
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Strings and Quotes</h2>
+
+            <p class="mb-2">Strings are text wrapped in quotes. JavaScript gives you three
+            options, and they're (mostly) interchangeable:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Three ways to write strings:</div>
+                <CodeBlock code={codeStringTypes} lang="javascript" />
+                <p class="code-comment mt-1">Single and double quotes work the same way.
+                Backticks have special powers we'll see next!</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>🟠 HAP's Tip:</h3>
+                    <p>Pick one style (I use double quotes for regular strings) and stick with it.
+                    Consistency makes your code easier to read. But save backticks for when you
+                    need their special powers!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 4: Template Literals
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Template Literals — My Favorite Discovery</h2>
+
+            <p class="mb-2">Backticks (<code>`</code>) create "template literals" that let you embed
+            variables directly in your text using <code>${`{}`}</code>. This changed everything for me:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Old way vs. new way:</div>
+                <CodeBlock code={codeTemplateLiterals} lang="javascript" />
+                <p class="code-comment mt-1">Template literals are easier to write, easier to read,
+                and less error-prone. No more forgetting spaces or plus signs!</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>Grace Hopper Interjects:</h3>
+                    <p>"The syntax is precise: dollar sign, opening brace, variable name, closing brace.
+                    <code>${`{variableName}`}</code>. JavaScript will only use the variable's value when
+                    all four characters appear together, in that exact order. Precision matters."</p>
+                </div>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-brain-explodes_wu0or8.jpg"
+                    alt="HAP having a breakthrough moment"
+                    width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+                <div class="hap-note-content">
+                    <h3>Breakthrough Moment!</h3>
+                    <p>Template literals changed everything for me. No more awkward
+                    <code>'Hello, ' + name + '!'</code> concatenation. Just backticks and
+                    <code>${`{}`}</code>. My code is SO much easier to read now!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 5: The Type Trap
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>The Type Trap I Fell Into</h2>
+
+            <p class="mb-2">This is the bug that made Grace intervene. I thought I was doing math,
+            but JavaScript thought I was combining text:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Why "5" + 1 = "51":</div>
+                <CodeBlock code={codeTypeTrap} lang="javascript" />
+                <p class="code-comment mt-1">When you use <code>+</code> with a string, JavaScript
+                converts the other value to a string too! Use <code>Number()</code> to convert
+                strings to numbers first.</p>
+            </div>
+
+            <div class="analysis-grid mt-2">
+                <div class="analysis-point">
+                    <h3>The Problem</h3>
+                    <p><code>"5"</code> looks like a number but it's a string.
+                    The quotes make all the difference!</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>The Diagnosis</h3>
+                    <p><code>typeof</code> reveals the truth.
+                    Always check when math behaves strangely.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>The Fix</h3>
+                    <p>Use <code>Number()</code> to convert strings to numbers
+                    before doing math.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>The Lesson</h3>
+                    <p>Don't assume—verify! Types matter in JavaScript,
+                    even when the language doesn't enforce them.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 6: Booleans
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Booleans — True or False</h2>
+
+            <p class="mb-2">Booleans are the simplest type: just <code>true</code> or <code>false</code>.
+            They're perfect for yes/no questions:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Using booleans:</div>
+                <CodeBlock code={codeBooleans} lang="javascript" />
+                <p class="code-comment mt-1">Booleans often come from comparisons (like <code>energyLevel > 50</code>).
+                We'll use these a lot more in Station 5!</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>🟠 Watch Out:</h3>
+                    <p><code>true</code> (no quotes) is a boolean. <code>"true"</code> (with quotes)
+                    is a string! They're completely different types. When in doubt, use <code>typeof</code>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION: Quick Reference
+         ============================================================ -->
+    <section class="content-section">
+        <div class="tips-container">
+            <h2 class="section-heading-centered">🎓 Data Types Quick Reference</h2>
+
+            <div class="tip-card">
+                <div class="tip-number">1</div>
+                <div>
+                    <h3>Strings are text</h3>
+                    <p><code>"Hello"</code>, <code>'World'</code>, or <code>`Template`</code>.
+                    Always in quotes. Use for names, messages, any text.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">2</div>
+                <div>
+                    <h3>Numbers are for math</h3>
+                    <p><code>42</code>, <code>3.14</code>, <code>-10</code>.
+                    NO quotes. Use for quantities, calculations, counts.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">3</div>
+                <div>
+                    <h3>Booleans are true/false</h3>
+                    <p>Only two values: <code>true</code> or <code>false</code>.
+                    NO quotes. Use for yes/no conditions.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">4</div>
+                <div>
+                    <h3>typeof reveals the truth</h3>
+                    <p><code>typeof myVar</code> tells you what type it is.
+                    Use it when behavior is unexpected.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">5</div>
+                <div>
+                    <h3>Template literals rock</h3>
+                    <p>Use backticks and <code>${`{variable}`}</code> to embed values in strings.
+                    Much cleaner than concatenation!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</StationLayout>

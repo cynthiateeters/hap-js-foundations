@@ -1,0 +1,369 @@
+---
+/**
+ * Station 3 - Remembering Things with Variables
+ *
+ * ============================================================
+ * LEARNING INTENT:
+ * ============================================================
+ * - Primary concept: Variables store values so you don't have to repeat yourself
+ * - Supporting concepts: const vs let, naming conventions, assignment operator
+ * - Explicit non-goals: Functions, scope, hoisting
+ *
+ * ============================================================
+ * CODE EXAMPLE ROLE: Illustrative
+ * ============================================================
+ * Shows how to declare and use variables for the Robot ID Card
+ */
+
+import StationLayout from '../../layouts/StationLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const introContent = `
+    <p><strong>Welcome to Station 3!</strong> I kept typing the same value over and over.
+    My robot name here, my robot name there—it was exhausting and error-prone.</p>
+    <p class="mt-1">There had to be a better way to make the program <em>remember</em> something.</p>
+    <p class="mt-1">Prof. Teeters noticed me copying and pasting the same text everywhere.
+    "What happens when you need to change that value?" she asked. I realized I'd have to
+    hunt down every single copy. That's when she introduced me to variables.</p>
+    <p class="mt-1">"Think of variables as labeled boxes," she said. "The label is the name,
+    and you can put whatever you want inside."</p>
+    <p class="mt-1">Let me show you how these labeled boxes changed everything for me... 🟠</p>
+`;
+
+const codeFactsAboutHAP = `// Facts about HAP (const — these don't change)
+const robotName = "HyBit A. ProtoBot";
+const modelNumber = "HAP-7000";
+const creationYear = 2024;
+
+console.log(robotName);    // "HyBit A. ProtoBot"
+console.log(modelNumber);  // "HAP-7000"
+console.log(creationYear); // 2024`;
+
+const codeHAPState = `// HAP's current state (let — these change!)
+let energyLevel = 100;
+let tasksDone = 0;
+let statusMessage = "Ready to learn!";
+
+// After completing a task...
+energyLevel = energyLevel - 15;  // Now 85
+tasksDone = tasksDone + 1;       // Now 1
+statusMessage = "One task done!";
+
+console.log(energyLevel);    // 85
+console.log(tasksDone);      // 1
+console.log(statusMessage);  // "One task done!"`;
+
+const codeNamingExamples = `// ❌ Bad names - What do these even mean?
+let x = 100;
+let y = "HAP-7000";
+let z = true;
+
+// ✅ Good names - Clear and descriptive
+let energyLevel = 100;
+let modelNumber = "HAP-7000";
+let isLearning = true;`;
+
+const codeAssignment = `// The assignment operator (=) means "gets the value of"
+// Read it left to right: "energyLevel GETS 100"
+
+let energyLevel = 100;      // Create box, put 100 inside
+energyLevel = 85;           // Replace contents with 85
+energyLevel = energyLevel - 10;  // Replace with current value minus 10
+
+// This does NOT work:
+// 100 = energyLevel;  // ❌ Error! Left side must be a variable`;
+---
+
+<StationLayout
+    stationNumber={3}
+    title="Remembering Things with Variables"
+    subtitle="Teaching your program to remember"
+    description="Learn how to use JavaScript variables (const and let) to store and manage data. Build the foundation for HAP's Robot ID Card."
+    avatarImage="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_200,c_limit/v1759495998/hap-laptop_xiewar.jpg"
+    avatarAlt="HAP studying at a laptop, learning about variables"
+    introContent={introContent}
+    ogImage="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_1200,c_fill,g_auto/v1759495998/hap-laptop_xiewar.jpg"
+    nextStationTitle="Types of Data"
+    footerReminder="Variables are labeled boxes. const for facts, let for things that change!"
+    labName="JavaScript Foundations"
+>
+
+    <!-- ============================================================
+         SECTION 1: What You'll Learn
+         ============================================================ -->
+    <section class="content-section">
+        <h2 class="section-heading-centered">What You'll Learn at This Station</h2>
+
+        <div class="intro-box">
+            <p><strong>HAP's Discovery:</strong> Variables let me store information once and use it
+            anywhere in my program. No more copying and pasting! I learned there are two kinds:
+            <code>const</code> for things that never change, and <code>let</code> for things that do.
+            Here are the three key insights that helped me understand variables:</p>
+        </div>
+
+        <div class="overview-grid mt-2">
+            <div class="insight-card">
+                <h3><span class="insight-icon">📦</span> const = Facts</h3>
+                <p class="stat-large">Never changes</p>
+                <p>Use <code>const</code> for values that stay the same forever, like my name or model number.
+                Once set, you can't reassign it.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">🔄</span> let = State</h3>
+                <p class="stat-large stat-teal">Can change</p>
+                <p>Use <code>let</code> for values that update over time, like my energy level or
+                how many tasks I've completed.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">🏷️</span> Names Matter</h3>
+                <p class="stat-large stat-brown">Be descriptive</p>
+                <p>Good variable names tell you what's inside without having to look.
+                <code>energyLevel</code> beats <code>x</code> every time.</p>
+            </div>
+        </div>
+
+        <div class="hap-note-callout">
+            <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-broke-things_qtbum4.jpg"
+                alt="HAP surrounded by tangled code with an 'oops' expression"
+                width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+            <div class="hap-note-content">
+                <h3>HAP's Confession:</h3>
+                <ul>
+                    <li>I named my first variables <code>x</code>, <code>y</code>, and <code>z</code>. A week later,
+                    I had no idea what any of them held. Now I use names like <code>robotName</code> and <code>energyLevel</code>.</li>
+                    <li>I tried to change a <code>const</code> and got an error. That's actually a <em>good</em> thing—JavaScript
+                    was protecting me from accidentally changing something that shouldn't change!</li>
+                    <li>I forgot you can't start a variable name with a number. <code>7thTask</code> doesn't work,
+                    but <code>task7</code> does.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2: The Two Kinds of Variables
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>The Two Kinds of Variables</h2>
+
+            <p class="mb-2">Prof. Teeters explained that JavaScript has two main ways to create variables,
+            and choosing the right one helps communicate your intentions to both the computer and other programmers.</p>
+
+            <div class="analysis-grid">
+                <div class="analysis-point">
+                    <h3>const — For Facts</h3>
+                    <p>Facts don't change. My name will always be "HyBit A. ProtoBot."
+                    My model number will always be "HAP-7000." These are <code>const</code> values.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>let — For State</h3>
+                    <p>State changes over time. My energy level goes up and down.
+                    My task count increases as I work. These are <code>let</code> values.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Why It Matters</h3>
+                    <p>Using <code>const</code> tells everyone "this won't change." If you accidentally
+                    try to change it, JavaScript will stop you with an error.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>When in Doubt</h3>
+                    <p>Start with <code>const</code>. If you later need to change the value,
+                    switch to <code>let</code>. This is safer than the other way around.</p>
+                </div>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>🟠 HAP's Tip:</h3>
+                    <p>I think of <code>const</code> as "constant" and <code>let</code> as "let me change this later."
+                    The names actually tell you what they do!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 3: Facts About HAP (const)
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Facts About HAP (const)</h2>
+
+            <p class="mb-2">Here's how I declared the unchanging facts for my Robot ID Card.
+            These values are set once and never modified:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">My Robot ID Card facts:</div>
+                <CodeBlock code={codeFactsAboutHAP} lang="javascript" />
+                <p class="code-comment mt-1">These three lines create labeled boxes for my permanent information.
+                The <code>const</code> keyword promises these values won't change.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 4: HAP's Current State (let)
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>HAP's Current State (let)</h2>
+
+            <p class="mb-2">Now here's the exciting part—values that actually change!
+            Watch how my energy level and task count update as I work:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Tracking changing values:</div>
+                <CodeBlock code={codeHAPState} lang="javascript" />
+                <p class="code-comment mt-1">The <code>let</code> keyword allows me to update these values.
+                Notice how I can use the current value to calculate a new one!</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-brain-explodes_wu0or8.jpg"
+                    alt="HAP having a breakthrough moment"
+                    width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+                <div class="hap-note-content">
+                    <h3>Breakthrough Moment!</h3>
+                    <p>I finally understood why both <code>const</code> and <code>let</code> exist.
+                    My <code>robotName</code> is a fact—it never changes. My <code>energyLevel</code>
+                    is a situation—it goes up and down as I work. The distinction is about <em>intent</em>,
+                    not just capability!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 5: Naming Your Variables
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Naming Your Variables</h2>
+
+            <p class="mb-2">Prof. Teeters says "Naming things well isn't extra work—it's a gift to future-you."
+            Here's why that matters:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Bad vs. Good names:</div>
+                <CodeBlock code={codeNamingExamples} lang="javascript" />
+                <p class="code-comment mt-1">Future-you will thank present-you for using clear, descriptive names!</p>
+            </div>
+
+            <div class="analysis-grid mt-2">
+                <div class="analysis-point">
+                    <h3>camelCase Convention</h3>
+                    <p>JavaScript uses camelCase: first word lowercase, then capitalize each new word.
+                    <code>energyLevel</code>, <code>tasksDone</code>, <code>robotName</code>.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Valid Characters</h3>
+                    <p>Use letters, digits, <code>$</code>, and <code>_</code>.
+                    Never start with a digit. <code>task7</code> works, <code>7task</code> doesn't.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Be Specific</h3>
+                    <p><code>userAge</code> is better than <code>age</code>.
+                    <code>totalPrice</code> is better than <code>price</code>.
+                    Context helps!</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Avoid Abbreviations</h3>
+                    <p><code>backgroundColor</code> beats <code>bgClr</code>.
+                    You'll read code far more often than you write it.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 6: The Assignment Operator
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>The Assignment Operator (=)</h2>
+
+            <p class="mb-2">Here's something that confused me at first: in JavaScript,
+            <code>=</code> doesn't mean "equals" like in math. It means "gets the value of."</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">How assignment works:</div>
+                <CodeBlock code={codeAssignment} lang="javascript" />
+                <p class="code-comment mt-1">Read assignments left to right: the variable on the left
+                GETS the value on the right. The left side must always be a variable (the box to put things in).</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>🟠 The Labeled Box Mental Model:</h3>
+                    <p>Variables are labeled boxes. The name is the label on the outside.
+                    The value is what's inside. When you assign a new value, you're swapping
+                    what's in the box—the label stays the same!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION: Quick Reference
+         ============================================================ -->
+    <section class="content-section">
+        <div class="tips-container">
+            <h2 class="section-heading-centered">🎓 Variables Quick Reference</h2>
+
+            <div class="tip-card">
+                <div class="tip-number">1</div>
+                <div>
+                    <h3>Use const for facts</h3>
+                    <p><code>const robotName = "HAP";</code> — Values that never change.
+                    JavaScript will error if you try to reassign.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">2</div>
+                <div>
+                    <h3>Use let for state</h3>
+                    <p><code>let energyLevel = 100;</code> — Values that change over time.
+                    Update with <code>energyLevel = 85;</code></p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">3</div>
+                <div>
+                    <h3>Use descriptive names</h3>
+                    <p>Use camelCase: <code>tasksDone</code>, <code>statusMessage</code>, <code>creationYear</code>.
+                    Future-you will thank you.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">4</div>
+                <div>
+                    <h3>= means "gets"</h3>
+                    <p>Read <code>x = 5</code> as "x gets 5." The variable on the left receives
+                    the value on the right.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">5</div>
+                <div>
+                    <h3>When in doubt, const</h3>
+                    <p>Start with <code>const</code>. If you need to change it later,
+                    switch to <code>let</code>. This catches accidental changes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</StationLayout>

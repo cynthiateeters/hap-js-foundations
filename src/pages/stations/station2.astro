@@ -1,0 +1,436 @@
+---
+/**
+ * Station 2 - The Grammar of Code
+ *
+ * ============================================================
+ * LEARNING INTENT:
+ * ============================================================
+ * - Primary concept: Code has grammar rules - statements and semicolons
+ * - Supporting concepts: Comments for documentation, ASI dangers
+ * - Explicit non-goals: Complex syntax, expressions vs statements deep dive
+ *
+ * ============================================================
+ * CODE EXAMPLE ROLE: Comparative
+ * ============================================================
+ * Shows code with and without proper grammar (semicolons, comments)
+ */
+
+import StationLayout from '../../layouts/StationLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const introContent = `
+    <p><strong>Welcome to Station 2!</strong> I wrote some code and it just... stopped.
+    No error message, no output, nothing. I stared at the screen for ten minutes.</p>
+    <p class="mt-1">The code <em>looked</em> right. But something invisible was wrong.</p>
+    <p class="mt-1">Prof. Teeters glanced over. "Read it like a sentence," she said.
+    "Where does one thought end and the next begin?"</p>
+    <p class="mt-1">That's when I realized: code has grammar, just like English.
+    Sentences need periods. Statements need semicolons.</p>
+    <p class="mt-1">Let me show you the grammar rules that saved my sanity... 🟠</p>
+`;
+
+const codeStatements = `// Each line is a STATEMENT - an instruction for JavaScript to follow
+const robotName = "HyBit A. ProtoBot";
+let energyLevel = 100;
+console.log(robotName);
+energyLevel = energyLevel - 15;
+
+// Statements are like sentences in English
+// Each one tells JavaScript to DO something`;
+
+const codeSemicolons = `// Semicolons mark the END of a statement
+const robotName = "HyBit A. ProtoBot";  // Statement 1
+let energyLevel = 100;                   // Statement 2
+console.log(robotName);                  // Statement 3
+
+// Think of semicolons like periods in English:
+// "My name is HAP. I am a robot. I love learning."
+// Without periods, it's confusing. Same with code!`;
+
+const codeASIProblem = `// JavaScript can GUESS where statements end (Automatic Semicolon Insertion)
+// But sometimes it guesses WRONG!
+
+// This looks like it should work...
+const greeting = "Hello"
+const name = "HAP"
+
+// But this causes a problem:
+return
+    "Hello, HAP!"
+
+// JavaScript thinks you meant:
+return;  // Returns undefined!
+"Hello, HAP!";  // This line never runs
+
+// The fix: Always use explicit semicolons!
+return "Hello, HAP!";`;
+
+const codeCommentsSingle = `// This is a single-line comment
+// JavaScript ignores everything after //
+
+const robotName = "HyBit A. ProtoBot";  // This explains the line
+let energyLevel = 100;  // Starting energy
+
+// Comments are notes to yourself (and others)
+// They don't affect how the code runs`;
+
+const codeCommentsMulti = `/* This is a multi-line comment.
+   It can span multiple lines.
+   Great for longer explanations! */
+
+const robotName = "HyBit A. ProtoBot";
+
+/*
+   Robot ID Card Configuration
+   ---------------------------
+   These values define HAP's identity.
+   robotName: The full official name
+   modelNumber: The hardware designation
+   creationYear: When HAP was built
+*/
+const modelNumber = "HAP-7000";
+const creationYear = 2024;`;
+
+const codeWellCommented = `// ═══════════════════════════════════════════════════════════
+// HAP's Robot ID Card - Variable Declarations
+// ═══════════════════════════════════════════════════════════
+
+// Facts about HAP (these never change)
+const robotName = "HyBit A. ProtoBot";
+const modelNumber = "HAP-7000";
+const creationYear = 2024;
+
+// HAP's current state (these change as HAP works)
+let energyLevel = 100;  // Percentage, decreases with tasks
+let tasksDone = 0;      // Count, increases as tasks complete
+
+// Display the initial state
+console.log("Robot initialized:", robotName);
+console.log("Energy:", energyLevel + "%");`;
+---
+
+<StationLayout
+    stationNumber={2}
+    title="The Grammar of Code"
+    subtitle="Statements, semicolons, and comments"
+    description="Learn JavaScript grammar: statements end with semicolons, comments document your code. Master the rules that make code readable."
+    avatarImage="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_200,c_limit/v1759495998/hap-laptop_xiewar.jpg"
+    avatarAlt="HAP learning about code grammar"
+    introContent={introContent}
+    ogImage="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_1200,c_fill,g_auto/v1759495998/hap-laptop_xiewar.jpg"
+    nextStationTitle="Remembering Things with Variables"
+    footerReminder="Semicolons are like periods. Every statement gets one. No guessing!"
+    labName="JavaScript Foundations"
+>
+
+    <!-- ============================================================
+         SECTION 1: What You'll Learn
+         ============================================================ -->
+    <section class="content-section">
+        <h2 class="section-heading-centered">What You'll Learn at This Station</h2>
+
+        <div class="intro-box">
+            <p><strong>HAP's Discovery:</strong> Code has grammar rules, just like English!
+            Statements are like sentences—each one is an instruction. Semicolons are like periods—they
+            mark where one statement ends. And comments are like margin notes—they help you
+            (and others) understand what the code does. Here are the three key insights:</p>
+        </div>
+
+        <div class="overview-grid mt-2">
+            <div class="insight-card">
+                <h3><span class="insight-icon">📝</span> Statements</h3>
+                <p class="stat-large">Instructions</p>
+                <p>Each statement tells JavaScript to do one thing.
+                Like sentences in English, they're the building blocks of your program.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">;</span> Semicolons</h3>
+                <p class="stat-large stat-teal">End markers</p>
+                <p>Semicolons mark where statements end. Like periods in sentences.
+                Always use them—don't let JavaScript guess!</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">💬</span> Comments</h3>
+                <p class="stat-large stat-brown">Notes to self</p>
+                <p>Comments explain your code to humans. JavaScript ignores them completely.
+                Future-you will thank present-you!</p>
+            </div>
+        </div>
+
+        <div class="hap-note-callout">
+            <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-broke-things_qtbum4.jpg"
+                alt="HAP surrounded by tangled code with an 'oops' expression"
+                width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+            <div class="hap-note-content">
+                <h3>HAP's Confession:</h3>
+                <ul>
+                    <li>I forgot a semicolon and JavaScript <em>guessed</em> where my statement ended.
+                    It guessed wrong. My code broke in a way that made no sense until I understood ASI.</li>
+                    <li>I wrote code with no comments. Three days later, I had no idea what it did.
+                    Now I comment as I write!</li>
+                    <li>I thought comments were optional extras. Prof. Teeters said they're
+                    "a gift to future-you." She was right.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2: Statements
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Statements — Instructions for JavaScript</h2>
+
+            <p class="mb-2">A statement is a single instruction that tells JavaScript to do something.
+            Your program is a list of statements that run one after another, top to bottom.</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Statements in action:</div>
+                <CodeBlock code={codeStatements} lang="javascript" />
+                <p class="code-comment mt-1">Each line is one statement. JavaScript reads them
+                in order: first it creates <code>robotName</code>, then <code>energyLevel</code>,
+                then it logs, then it subtracts.</p>
+            </div>
+
+            <div class="analysis-grid mt-2">
+                <div class="analysis-point">
+                    <h3>Declaration Statements</h3>
+                    <p><code>const robotName = "HAP";</code> creates a new variable
+                    and gives it a value.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Assignment Statements</h3>
+                    <p><code>energyLevel = 85;</code> changes an existing variable's value.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Function Call Statements</h3>
+                    <p><code>console.log("Hello");</code> runs a function to do something.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Top to Bottom</h3>
+                    <p>JavaScript runs statements in order. Line 1 happens before line 2.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 3: Semicolons
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Semicolons — The Periods of Code</h2>
+
+            <p class="mb-2">In English, periods mark where sentences end. In JavaScript,
+            semicolons mark where statements end. Without them, things get confusing:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Semicolons mark statement endings:</div>
+                <CodeBlock code={codeSemicolons} lang="javascript" />
+                <p class="code-comment mt-1">Every statement ends with a semicolon.
+                It's clear, it's explicit, and it prevents weird bugs.</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>🟠 HAP's Tip:</h3>
+                    <p>Treat semicolons like periods in sentences. Every statement gets one.
+                    <code>const name = "HAP";</code> is like saying "My name is HAP."
+                    The semicolon says "This thought is complete."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 4: The ASI Problem
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Why Explicit Semicolons Matter</h2>
+
+            <p class="mb-2">JavaScript has a feature called "Automatic Semicolon Insertion" (ASI).
+            It tries to guess where semicolons should go. But sometimes it guesses wrong:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">When JavaScript guesses wrong:</div>
+                <CodeBlock code={codeASIProblem} lang="javascript" />
+                <p class="code-comment mt-1">ASI inserted a semicolon after <code>return</code>,
+                breaking the code. This is why explicit semicolons are safer!</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>Grace Hopper Interjects:</h3>
+                    <p>"The specification does allow omitting semicolons. However, relying on the
+                    interpreter to infer your intent is imprecise. State your intent explicitly.
+                    Ambiguity is the enemy of correctness."</p>
+                </div>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-brain-explodes_wu0or8.jpg"
+                    alt="HAP having a breakthrough moment"
+                    width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+                <div class="hap-note-content">
+                    <h3>Breakthrough Moment!</h3>
+                    <p>Grace was right. I added semicolons everywhere. Now I treat them like periods
+                    in sentences. Every statement gets one. No guessing, no surprises!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 5: Single-Line Comments
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Single-Line Comments</h2>
+
+            <p class="mb-2">Comments are notes that JavaScript completely ignores.
+            They're for humans—especially future-you! Single-line comments start with <code>//</code>:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Using // for comments:</div>
+                <CodeBlock code={codeCommentsSingle} lang="javascript" />
+                <p class="code-comment mt-1">Everything after <code>//</code> on that line is ignored.
+                Use these for quick notes and explanations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 6: Multi-Line Comments
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Multi-Line Comments</h2>
+
+            <p class="mb-2">For longer explanations, use multi-line comments.
+            They start with <code>/*</code> and end with <code>*/</code>:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Using /* */ for longer comments:</div>
+                <CodeBlock code={codeCommentsMulti} lang="javascript" />
+                <p class="code-comment mt-1">Everything between <code>/*</code> and <code>*/</code> is ignored.
+                Great for documentation blocks and temporarily disabling code.</p>
+            </div>
+
+            <div class="analysis-grid mt-2">
+                <div class="analysis-point">
+                    <h3>// Single-line</h3>
+                    <p>Quick notes. One line only. Good for explaining a specific line of code.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>/* Multi-line */</h3>
+                    <p>Longer explanations. Can span many lines. Good for documentation blocks.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Explain the "Why"</h3>
+                    <p>Good comments explain <em>why</em> code exists, not just what it does.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Don't Over-Comment</h3>
+                    <p><code>// Add 1 to x</code> before <code>x = x + 1</code> is unnecessary.
+                    The code is already clear.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 7: Well-Commented Code
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Well-Commented Code</h2>
+
+            <p class="mb-2">Here's what good commenting looks like in practice—clear sections,
+            meaningful explanations, and organized structure:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">A well-commented code example:</div>
+                <CodeBlock code={codeWellCommented} lang="javascript" />
+                <p class="code-comment mt-1">Section headers, inline explanations, and clear organization.
+                Future-you will understand this code at a glance!</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>🟠 HAP's Comment Philosophy:</h3>
+                    <p>I comment to help future-me understand present-me's thinking.
+                    Not every line needs a comment, but every confusing bit does.
+                    If I had to think hard to write it, it needs a comment explaining why!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION: Quick Reference
+         ============================================================ -->
+    <section class="content-section">
+        <div class="tips-container">
+            <h2 class="section-heading-centered">🎓 Code Grammar Quick Reference</h2>
+
+            <div class="tip-card">
+                <div class="tip-number">1</div>
+                <div>
+                    <h3>Statements are instructions</h3>
+                    <p>Each statement tells JavaScript to do one thing. Programs are lists of statements.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">2</div>
+                <div>
+                    <h3>End statements with semicolons</h3>
+                    <p><code>const x = 5;</code> — The semicolon says "this statement is complete."</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">3</div>
+                <div>
+                    <h3>Don't rely on ASI</h3>
+                    <p>JavaScript can guess where semicolons go, but it sometimes guesses wrong. Be explicit!</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">4</div>
+                <div>
+                    <h3>// for single-line comments</h3>
+                    <p>Everything after <code>//</code> on that line is ignored by JavaScript.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">5</div>
+                <div>
+                    <h3>/* */ for multi-line comments</h3>
+                    <p>Everything between <code>/*</code> and <code>*/</code> is ignored. Can span many lines.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">6</div>
+                <div>
+                    <h3>Comments are gifts to future-you</h3>
+                    <p>Explain the "why," not just the "what." You'll thank yourself later!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</StationLayout>

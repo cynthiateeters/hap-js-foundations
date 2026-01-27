@@ -1,0 +1,426 @@
+---
+/**
+ * Station 1 - Setting Up the Workbench
+ *
+ * ============================================================
+ * LEARNING INTENT:
+ * ============================================================
+ * - Primary concept: Where to write JavaScript and how to see output
+ * - Supporting concepts: VS Code, script tag placement, console.log, DevTools
+ * - Explicit non-goals: Advanced IDE features, Node.js, complex HTML
+ *
+ * ============================================================
+ * CODE EXAMPLE ROLE: Illustrative
+ * ============================================================
+ * Shows basic HTML structure with script tag and console.log
+ */
+
+import StationLayout from '../../layouts/StationLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const introContent = `
+    <p><strong>Welcome to Station 1!</strong> I didn't know where to even <em>write</em> JavaScript.
+    Do I need special software? Where does the code go? How do I see if it works?</p>
+    <p class="mt-1">I stared at my computer feeling completely lost.</p>
+    <p class="mt-1">Prof. Teeters smiled. "Let's set up your workbench," she said.
+    "Every craftsperson needs the right tools in the right places."</p>
+    <p class="mt-1">She showed me VS Code for writing code, and the browser's Console for seeing results.
+    Within minutes, I had my first program running!</p>
+    <p class="mt-1">Let me show you how to set up your own workbench... 🟠</p>
+`;
+
+const codeBasicHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HAP's First Program</title>
+</head>
+<body>
+    <h1>Hello, World!</h1>
+    <p>My first JavaScript page.</p>
+
+    <!-- JavaScript goes here, at the BOTTOM of body -->
+    <script>
+        console.log("HAP online!");
+    </script>
+</body>
+</html>`;
+
+const codeScriptInHead = `<!-- ❌ WRONG - Script in <head> runs BEFORE the page loads -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        // This runs before the body exists!
+        // It can't find any elements on the page yet
+        console.log("Running too early...");
+    </script>
+</head>
+<body>
+    <h1>This loads AFTER the script runs</h1>
+</body>
+</html>`;
+
+const codeScriptAtBottom = `<!-- ✅ RIGHT - Script at bottom of <body> -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HAP's Page</title>
+</head>
+<body>
+    <h1>This loads first</h1>
+    <p>All the HTML is ready...</p>
+
+    <!-- Script runs AFTER everything above is loaded -->
+    <script>
+        console.log("Page is ready! HAP online!");
+    </script>
+</body>
+</html>`;
+
+const codeConsoleLog = `// console.log() sends messages to the browser's Console
+console.log("HAP online!");
+console.log("My name is", "HyBit A. ProtoBot");
+console.log("Energy level:", 100);
+
+// You can log multiple things at once!
+const robotName = "HAP";
+const energyLevel = 100;
+console.log("Robot:", robotName, "Energy:", energyLevel);`;
+
+const codeFirstProgram = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Robot ID Card</title>
+</head>
+<body>
+    <h1>HAP's Robot ID Card</h1>
+
+    <script>
+        // My first JavaScript program!
+        console.log("=== Robot ID Card ===");
+        console.log("Name: HyBit A. ProtoBot");
+        console.log("Model: HAP-7000");
+        console.log("Status: Online and learning!");
+    </script>
+</body>
+</html>`;
+---
+
+<StationLayout
+    stationNumber={1}
+    title="Setting Up the Workbench"
+    subtitle="Your tools for writing JavaScript"
+    description="Learn to set up VS Code, write your first JavaScript, and use the browser Console. Get your development workbench ready!"
+    avatarImage="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_200,c_limit/v1759495998/hap-laptop_xiewar.jpg"
+    avatarAlt="HAP setting up a coding workbench"
+    introContent={introContent}
+    ogImage="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_1200,c_fill,g_auto/v1759495998/hap-laptop_xiewar.jpg"
+    nextStationTitle="The Grammar of Code"
+    footerReminder="Script at the bottom of body. Console is your friend. console.log() everything!"
+    labName="JavaScript Foundations"
+>
+
+    <!-- ============================================================
+         SECTION 1: What You'll Learn
+         ============================================================ -->
+    <section class="content-section">
+        <h2 class="section-heading-centered">What You'll Learn at This Station</h2>
+
+        <div class="intro-box">
+            <p><strong>HAP's Discovery:</strong> Before writing code, you need a workbench!
+            I learned that VS Code is where I write my code, the browser is where it runs,
+            and the Console is where I see what's happening. Here are the three key tools:</p>
+        </div>
+
+        <div class="overview-grid mt-2">
+            <div class="insight-card">
+                <h3><span class="insight-icon">📝</span> VS Code</h3>
+                <p class="stat-large">Write code</p>
+                <p>Visual Studio Code is a free code editor. It highlights your code,
+                catches typos, and makes writing easier.</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">🌐</span> Browser</h3>
+                <p class="stat-large stat-teal">Run code</p>
+                <p>Your web browser (Chrome, Firefox, etc.) runs JavaScript.
+                Open your HTML file and the code executes!</p>
+            </div>
+
+            <div class="insight-card">
+                <h3><span class="insight-icon">🖥️</span> Console</h3>
+                <p class="stat-large stat-brown">See output</p>
+                <p>The browser's Developer Tools Console shows your <code>console.log()</code>
+                messages. Press F12 to open it!</p>
+            </div>
+        </div>
+
+        <div class="hap-note-callout">
+            <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-broke-things_qtbum4.jpg"
+                alt="HAP surrounded by tangled code with an 'oops' expression"
+                width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+            <div class="hap-note-content">
+                <h3>HAP's Confession:</h3>
+                <ul>
+                    <li>I put my <code>&lt;script&gt;</code> tag in the <code>&lt;head&gt;</code> and nothing worked.
+                    The browser tried to run my code before the page loaded!</li>
+                    <li>I forgot to open the Console. My code was working fine—I just couldn't
+                    see the output! Press F12, HAP...</li>
+                    <li>I saved my file as <code>.txt</code> instead of <code>.html</code>.
+                    The browser showed my code as text instead of running it.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2: Your Code Editor
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Your Code Editor: VS Code</h2>
+
+            <p class="mb-2">Visual Studio Code (VS Code) is a free code editor that makes writing
+            JavaScript much easier. Here's how to get started:</p>
+
+            <div class="analysis-grid">
+                <div class="analysis-point">
+                    <h3>1. Download VS Code</h3>
+                    <p>Go to <strong>code.visualstudio.com</strong> and download the free editor
+                    for your computer (Windows, Mac, or Linux).</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>2. Install Prettier</h3>
+                    <p>Click the Extensions icon (or press Ctrl+Shift+X) and search for "Prettier."
+                    This extension automatically formats your code nicely.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>3. Create a Folder</h3>
+                    <p>Make a new folder for your project. In VS Code, go to File → Open Folder
+                    and select it. This is your workspace!</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>4. Create an HTML File</h3>
+                    <p>Right-click in the explorer panel and choose "New File."
+                    Name it <code>index.html</code> — this is where your code lives.</p>
+                </div>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>🟠 HAP's Tip:</h3>
+                    <p>Save your file with Ctrl+S (or Cmd+S on Mac) frequently!
+                    The browser only sees the saved version of your file.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 3: Where JavaScript Goes
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Where JavaScript Goes in HTML</h2>
+
+            <p class="mb-2">JavaScript lives inside <code>&lt;script&gt;</code> tags in your HTML file.
+            But where you put those tags matters a lot!</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Basic HTML structure with JavaScript:</div>
+                <CodeBlock code={codeBasicHTML} lang="html" />
+                <p class="code-comment mt-1">The <code>&lt;script&gt;</code> tag goes at the
+                <strong>bottom</strong> of the <code>&lt;body&gt;</code>, right before <code>&lt;/body&gt;</code>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 4: Script Placement
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Why Script Placement Matters</h2>
+
+            <p class="mb-2">The browser reads your page top to bottom. If your script is in the
+            <code>&lt;head&gt;</code>, it runs before the page content exists!</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">❌ Wrong - Script in head:</div>
+                <CodeBlock code={codeScriptInHead} lang="html" />
+                <p class="code-comment mt-1">This script runs too early—before the body content loads.
+                If it tries to find elements on the page, they won't exist yet!</p>
+            </div>
+
+            <div class="prompt-box mt-2">
+                <div class="prompt-label">✅ Right - Script at bottom of body:</div>
+                <CodeBlock code={codeScriptAtBottom} lang="html" />
+                <p class="code-comment mt-1">This script runs after all the HTML is loaded.
+                Now it can find and work with any element on the page!</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>Prof. Teeters Explains:</h3>
+                    <p>"The browser reads your page like a book—top to bottom, left to right.
+                    If you put instructions at the top that refer to things at the bottom,
+                    those things don't exist yet! Put your script at the end, after everything
+                    it might need is already there."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 5: The Console
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>The Console: Your Window into JavaScript</h2>
+
+            <p class="mb-2">The Console is where you see what your JavaScript is doing.
+            It's hidden by default—here's how to find it:</p>
+
+            <div class="analysis-grid">
+                <div class="analysis-point">
+                    <h3>Open Developer Tools</h3>
+                    <p>Press <strong>F12</strong> on your keyboard (or right-click the page
+                    and choose "Inspect"). A panel will open.</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Click the Console Tab</h3>
+                    <p>In the Developer Tools panel, click the "Console" tab.
+                    This is where your messages appear!</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>See Your Output</h3>
+                    <p>Anything you <code>console.log()</code> appears here.
+                    Errors also show up in red—very helpful for debugging!</p>
+                </div>
+
+                <div class="analysis-point">
+                    <h3>Keep It Open</h3>
+                    <p>Leave the Console open while you're developing.
+                    It's your best friend for understanding what your code is doing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 6: console.log()
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Your First Tool: console.log()</h2>
+
+            <p class="mb-2"><code>console.log()</code> sends a message to the Console.
+            It's how you see what your code is doing:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">Using console.log():</div>
+                <CodeBlock code={codeConsoleLog} lang="javascript" />
+                <p class="code-comment mt-1">You can log text, numbers, variables, or multiple things at once.
+                This is your primary tool for understanding your code!</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <img src="https://res.cloudinary.com/cynthia-teeters/image/upload/f_auto,q_auto,w_150,c_limit/v1763230414/hap-brain-explodes_wu0or8.jpg"
+                    alt="HAP having a breakthrough moment"
+                    width="150" height="150" class="hap-note-image" decoding="async" loading="lazy">
+                <div class="hap-note-content">
+                    <h3>Breakthrough Moment!</h3>
+                    <p>Once I saw my first message appear in the Console, I felt like a real programmer.
+                    "HAP online!" Those two words changed everything. That's when it clicked—the
+                    Console is where I'll live for a while!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 7: Your First Program
+         ============================================================ -->
+    <section class="content-section">
+        <div class="topic-section">
+            <h2>Your First Program</h2>
+
+            <p class="mb-2">Let's put it all together! Here's a complete program that logs
+            information about a robot to the Console:</p>
+
+            <div class="prompt-box">
+                <div class="prompt-label">A complete first program:</div>
+                <CodeBlock code={codeFirstProgram} lang="html" />
+                <p class="code-comment mt-1">Save this as <code>index.html</code>, open it in your browser,
+                press F12, and look at the Console. You should see the robot's information!</p>
+            </div>
+
+            <div class="hap-note-callout mt-2">
+                <div class="hap-note-content">
+                    <h3>🟠 Try It Yourself:</h3>
+                    <p>Create this file, open it in your browser, and check the Console.
+                    Then change the messages! Add your own <code>console.log()</code> lines.
+                    Experiment! Breaking things is how you learn.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION: Quick Reference
+         ============================================================ -->
+    <section class="content-section">
+        <div class="tips-container">
+            <h2 class="section-heading-centered">🎓 Workbench Quick Reference</h2>
+
+            <div class="tip-card">
+                <div class="tip-number">1</div>
+                <div>
+                    <h3>VS Code for writing</h3>
+                    <p>Download from code.visualstudio.com. Install the Prettier extension for auto-formatting.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">2</div>
+                <div>
+                    <h3>Script at bottom of body</h3>
+                    <p>Put <code>&lt;script&gt;</code> right before <code>&lt;/body&gt;</code>.
+                    Never in the <code>&lt;head&gt;</code> for now!</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">3</div>
+                <div>
+                    <h3>F12 opens Developer Tools</h3>
+                    <p>Press F12, then click the Console tab. This is where <code>console.log()</code> output appears.</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">4</div>
+                <div>
+                    <h3>console.log() is your friend</h3>
+                    <p><code>console.log("message");</code> sends text to the Console. Use it constantly to see what's happening!</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-number">5</div>
+                <div>
+                    <h3>Save with Ctrl+S</h3>
+                    <p>The browser only sees saved files. Save frequently, then refresh the browser to see changes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</StationLayout>
