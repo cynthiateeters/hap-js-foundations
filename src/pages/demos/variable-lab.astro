@@ -174,20 +174,44 @@
             color: var(--let-color);
         }
 
-        .try-change-btn {
-            width: 100%;
-            padding: 0.5rem;
+        .try-change-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .try-change-input {
+            flex: 1;
+            padding: 0.4rem 0.6rem;
             border: 2px dashed var(--const-color);
-            background: transparent;
-            color: var(--const-color);
             border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', monospace;
             font-size: 0.8rem;
+            background: white;
+        }
+
+        .try-change-input:focus {
+            outline: none;
+            border-style: solid;
+            border-color: var(--const-color);
+        }
+
+        .try-change-btn {
+            padding: 0.4rem 0.75rem;
+            border: 2px solid var(--const-color);
+            background: var(--const-color);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .try-change-btn:hover {
-            background-color: hsl(0, 70%, 90%);
+            background-color: hsl(0, 70%, 40%);
+            border-color: hsl(0, 70%, 40%);
         }
 
         .change-controls {
@@ -274,8 +298,8 @@
             font-family: 'Consolas', 'Monaco', monospace;
             font-size: 0.8rem;
             color: var(--log-text);
-            min-height: 80px;
-            max-height: 120px;
+            min-height: 100px;
+            max-height: 180px;
             overflow-y: auto;
         }
 
@@ -364,25 +388,37 @@
                 <div class="variable-item">
                     <div class="variable-name">robotName</div>
                     <div class="variable-value" id="const-robotName">"HyBit A. ProtoBot"</div>
-                    <button class="try-change-btn" onclick="tryChangeConst('robotName')">
-                        Try to Change →
-                    </button>
+                    <div class="try-change-row">
+                        <input type="text" class="try-change-input" id="input-robotName"
+                               placeholder="Type new value...">
+                        <button class="try-change-btn" onclick="tryChangeConst('robotName')">
+                            Set →
+                        </button>
+                    </div>
                 </div>
 
                 <div class="variable-item">
                     <div class="variable-name">modelNumber</div>
                     <div class="variable-value" id="const-modelNumber">"HAP-7000"</div>
-                    <button class="try-change-btn" onclick="tryChangeConst('modelNumber')">
-                        Try to Change →
-                    </button>
+                    <div class="try-change-row">
+                        <input type="text" class="try-change-input" id="input-modelNumber"
+                               placeholder="Type new value...">
+                        <button class="try-change-btn" onclick="tryChangeConst('modelNumber')">
+                            Set →
+                        </button>
+                    </div>
                 </div>
 
                 <div class="variable-item">
                     <div class="variable-name">creationYear</div>
                     <div class="variable-value" id="const-creationYear">2024</div>
-                    <button class="try-change-btn" onclick="tryChangeConst('creationYear')">
-                        Try to Change →
-                    </button>
+                    <div class="try-change-row">
+                        <input type="text" class="try-change-input" id="input-creationYear"
+                               placeholder="Type new value...">
+                        <button class="try-change-btn" onclick="tryChangeConst('creationYear')">
+                            Set →
+                        </button>
+                    </div>
                 </div>
             </section>
 
@@ -473,9 +509,29 @@
         }
 
         function tryChangeConst(varName) {
-            addLog(`Tried to change ${varName}...`, 'error');
-            addLog(`ERROR: Cannot reassign const "${varName}"!`, 'error');
-            addLog(`Constants are locked - they cannot be changed after creation.`, 'error');
+            // Get the input value (safely using textContent later)
+            const inputEl = document.getElementById('input-' + varName);
+            const attemptedValue = inputEl ? inputEl.value : '';
+
+            // Show what they tried
+            if (attemptedValue) {
+                addLog(`${varName} = ${attemptedValue}`, 'error');
+            } else {
+                addLog(`${varName} = (new value)`, 'error');
+            }
+
+            // Show realistic browser error
+            addLog(``, 'error');
+            addLog(`Uncaught TypeError: Assignment to constant variable.`, 'error');
+            addLog(`    at <anonymous>:1:${varName.length + 1}`, 'error');
+            addLog(``, 'error');
+
+            // Educational explanation
+            addLog(`💡 This is the real error JavaScript throws!`, 'normal');
+            addLog(`   Constants cannot be changed after creation.`, 'normal');
+
+            // Clear the input
+            if (inputEl) inputEl.value = '';
         }
 
         function changeEnergy(amount) {
@@ -514,6 +570,18 @@
             const logOutput = document.getElementById('log-output');
             logOutput.innerHTML = '<div class="log-line">Log cleared. Try changing some values!</div>';
         }
+
+        // Allow Enter key to trigger const change attempts
+        ['robotName', 'modelNumber', 'creationYear'].forEach(function(varName) {
+            const input = document.getElementById('input-' + varName);
+            if (input) {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        tryChangeConst(varName);
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>
