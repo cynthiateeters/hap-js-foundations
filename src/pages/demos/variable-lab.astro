@@ -1,0 +1,519 @@
+---
+/**
+ * Variable Lab Demo
+ * An interactive demo for Station 3: Remembering Things with Variables
+ * Shows the difference between const (locked) and let (changeable)
+ */
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variable Lab - HAP's Demo</title>
+    <style>
+        :root {
+            --hap-orange: hsl(32, 76%, 63%);
+            --hap-orange-dark: hsl(32, 76%, 45%);
+            --bg-dark: hsl(220, 13%, 18%);
+            --bg-card: hsl(220, 13%, 95%);
+            --text-dark: hsl(220, 13%, 20%);
+            --text-light: hsl(220, 13%, 96%);
+            --text-muted: hsl(220, 10%, 50%);
+            --border-color: hsl(220, 13%, 80%);
+            --const-color: hsl(0, 70%, 50%);
+            --const-bg: hsl(0, 70%, 95%);
+            --let-color: hsl(142, 70%, 35%);
+            --let-bg: hsl(142, 70%, 95%);
+            --log-bg: hsl(220, 13%, 12%);
+            --log-text: hsl(120, 100%, 75%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.5rem;
+            color: var(--hap-orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .demo-container {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            max-width: 700px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 10px 40px hsl(220, 13%, 10%, 0.15);
+        }
+
+        .demo-header {
+            background: linear-gradient(135deg, var(--hap-orange), var(--hap-orange-dark));
+            color: var(--text-light);
+            padding: 1rem 1.5rem;
+            text-align: center;
+        }
+
+        .demo-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .panel {
+            padding: 1.25rem;
+        }
+
+        .panel-const {
+            background-color: var(--const-bg);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .panel-let {
+            background-color: var(--let-bg);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid;
+        }
+
+        .panel-const .panel-header {
+            border-color: var(--const-color);
+        }
+
+        .panel-let .panel-header {
+            border-color: var(--let-color);
+        }
+
+        .panel-header .icon {
+            font-size: 1.25rem;
+        }
+
+        .panel-header h3 {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .panel-const .panel-header h3 {
+            color: var(--const-color);
+        }
+
+        .panel-let .panel-header h3 {
+            color: var(--let-color);
+        }
+
+        .panel-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        .variable-item {
+            background: white;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .variable-name {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .variable-value {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 1rem;
+            padding: 0.5rem 0.75rem;
+            background-color: hsl(220, 13%, 97%);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .panel-const .variable-value {
+            color: var(--const-color);
+        }
+
+        .panel-let .variable-value {
+            color: var(--let-color);
+        }
+
+        .try-change-btn {
+            width: 100%;
+            padding: 0.5rem;
+            border: 2px dashed var(--const-color);
+            background: transparent;
+            color: var(--const-color);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .try-change-btn:hover {
+            background-color: hsl(0, 70%, 90%);
+        }
+
+        .change-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .change-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+
+        .change-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .change-btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-minus {
+            background-color: hsl(0, 60%, 55%);
+            color: white;
+        }
+
+        .btn-plus {
+            background-color: var(--let-color);
+            color: white;
+        }
+
+        .message-btn {
+            width: 100%;
+            padding: 0.5rem;
+            border: none;
+            background-color: hsl(210, 60%, 50%);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .message-btn:hover {
+            background-color: hsl(210, 60%, 40%);
+        }
+
+        .log-section {
+            padding: 1rem 1.5rem;
+            background-color: hsl(220, 13%, 90%);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .log-header h3 {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
+
+        .clear-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .log-output {
+            background-color: var(--log-bg);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.8rem;
+            color: var(--log-text);
+            min-height: 80px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .log-line {
+            padding: 0.2rem 0;
+        }
+
+        .log-error {
+            color: hsl(0, 80%, 65%);
+        }
+
+        .log-success {
+            color: hsl(142, 80%, 55%);
+        }
+
+        .tip-section {
+            padding: 1rem 1.5rem;
+            background-color: hsl(32, 76%, 95%);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .tip-section p {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
+
+        .tip-section strong {
+            color: var(--hap-orange-dark);
+        }
+
+        .tip-section code {
+            background-color: hsl(220, 13%, 90%);
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+
+        .back-link {
+            margin-top: 1.5rem;
+            color: var(--hap-orange);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .panels {
+                grid-template-columns: 1fr;
+            }
+
+            .panel-const {
+                border-right: none;
+                border-bottom: 2px solid var(--border-color);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!--
+    HAP Educational Content © 2026 Cynthia Teeters. All rights reserved.
+    HyBit A. ProtoBot (HAP) character and the apprentice learning methodology are proprietary educational innovations.
+    -->
+
+    <header class="page-header">
+        <h1>Variable Lab</h1>
+        <p>See the difference between const and let in action!</p>
+    </header>
+
+    <main class="demo-container">
+        <div class="demo-header">
+            <h2>🔬 const vs let - The Interactive Experiment</h2>
+        </div>
+
+        <div class="panels">
+            <!-- CONST Panel -->
+            <section class="panel panel-const">
+                <div class="panel-header">
+                    <span class="icon">🔒</span>
+                    <h3>CONSTANTS</h3>
+                    <span class="panel-subtitle">Cannot change</span>
+                </div>
+
+                <div class="variable-item">
+                    <div class="variable-name">robotName</div>
+                    <div class="variable-value" id="const-robotName">"HyBit A. ProtoBot"</div>
+                    <button class="try-change-btn" onclick="tryChangeConst('robotName')">
+                        Try to Change →
+                    </button>
+                </div>
+
+                <div class="variable-item">
+                    <div class="variable-name">modelNumber</div>
+                    <div class="variable-value" id="const-modelNumber">"HAP-7000"</div>
+                    <button class="try-change-btn" onclick="tryChangeConst('modelNumber')">
+                        Try to Change →
+                    </button>
+                </div>
+
+                <div class="variable-item">
+                    <div class="variable-name">creationYear</div>
+                    <div class="variable-value" id="const-creationYear">2024</div>
+                    <button class="try-change-btn" onclick="tryChangeConst('creationYear')">
+                        Try to Change →
+                    </button>
+                </div>
+            </section>
+
+            <!-- LET Panel -->
+            <section class="panel panel-let">
+                <div class="panel-header">
+                    <span class="icon">🔓</span>
+                    <h3>VARIABLES</h3>
+                    <span class="panel-subtitle">Can change</span>
+                </div>
+
+                <div class="variable-item">
+                    <div class="variable-name">energyLevel</div>
+                    <div class="variable-value" id="let-energyLevel">100</div>
+                    <div class="change-controls">
+                        <button class="change-btn btn-minus" onclick="changeEnergy(-15)">− 15</button>
+                        <button class="change-btn btn-plus" onclick="changeEnergy(25)">+ 25</button>
+                    </div>
+                </div>
+
+                <div class="variable-item">
+                    <div class="variable-name">tasksDone</div>
+                    <div class="variable-value" id="let-tasksDone">0</div>
+                    <div class="change-controls">
+                        <button class="change-btn btn-minus" onclick="changeTasks(-1)">− 1</button>
+                        <button class="change-btn btn-plus" onclick="changeTasks(1)">+ 1</button>
+                    </div>
+                </div>
+
+                <div class="variable-item">
+                    <div class="variable-name">statusMessage</div>
+                    <div class="variable-value" id="let-statusMessage">"Ready to learn!"</div>
+                    <button class="message-btn" onclick="cycleMessage()">
+                        Change Message →
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <section class="log-section">
+            <div class="log-header">
+                <h3>📋 Change Log</h3>
+                <button class="clear-btn" onclick="clearLog()">Clear</button>
+            </div>
+            <div class="log-output" id="log-output">
+                <div class="log-line">Welcome to Variable Lab! Try changing some values.</div>
+            </div>
+        </section>
+
+        <section class="tip-section">
+            <p><strong>🟠 HAP's Insight:</strong> Notice how <code>const</code> values are "locked" —
+            you can click all you want but they won't change. That's the point! Use <code>const</code>
+            for facts that should never change, and <code>let</code> for values that need to update.</p>
+        </section>
+    </main>
+
+    <a href="/stations/station3/" class="back-link">← Back to Station 3</a>
+
+    <script is:inline>
+        // Our variables - matching the Robot ID Card
+        // Constants - these values are fixed
+        const robotName = "HyBit A. ProtoBot";
+        const modelNumber = "HAP-7000";
+        const creationYear = 2024;
+
+        // Let variables - these can change
+        let energyLevel = 100;
+        let tasksDone = 0;
+        let statusMessage = "Ready to learn!";
+
+        // Status messages to cycle through
+        const messages = [
+            "Ready to learn!",
+            "Working hard!",
+            "Task completed!",
+            "Need a break...",
+            "Energized!"
+        ];
+        let messageIndex = 0;
+
+        function addLog(text, type = 'normal') {
+            const logOutput = document.getElementById('log-output');
+            const line = document.createElement('div');
+            line.className = 'log-line' + (type === 'error' ? ' log-error' : type === 'success' ? ' log-success' : '');
+            line.textContent = '> ' + text;
+            logOutput.appendChild(line);
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+
+        function tryChangeConst(varName) {
+            addLog(`Tried to change ${varName}...`, 'error');
+            addLog(`ERROR: Cannot reassign const "${varName}"!`, 'error');
+            addLog(`Constants are locked - they cannot be changed after creation.`, 'error');
+        }
+
+        function changeEnergy(amount) {
+            const oldValue = energyLevel;
+            energyLevel = energyLevel + amount;
+
+            // Cap at 0-100
+            if (energyLevel < 0) energyLevel = 0;
+            if (energyLevel > 100) energyLevel = 100;
+
+            document.getElementById('let-energyLevel').textContent = energyLevel;
+            addLog(`energyLevel: ${oldValue} → ${energyLevel}`, 'success');
+        }
+
+        function changeTasks(amount) {
+            const oldValue = tasksDone;
+            tasksDone = tasksDone + amount;
+
+            // Can't go below 0
+            if (tasksDone < 0) tasksDone = 0;
+
+            document.getElementById('let-tasksDone').textContent = tasksDone;
+            addLog(`tasksDone: ${oldValue} → ${tasksDone}`, 'success');
+        }
+
+        function cycleMessage() {
+            const oldValue = statusMessage;
+            messageIndex = (messageIndex + 1) % messages.length;
+            statusMessage = messages[messageIndex];
+
+            document.getElementById('let-statusMessage').textContent = '"' + statusMessage + '"';
+            addLog(`statusMessage: "${oldValue}" → "${statusMessage}"`, 'success');
+        }
+
+        function clearLog() {
+            const logOutput = document.getElementById('log-output');
+            logOutput.innerHTML = '<div class="log-line">Log cleared. Try changing some values!</div>';
+        }
+    </script>
+</body>
+</html>
