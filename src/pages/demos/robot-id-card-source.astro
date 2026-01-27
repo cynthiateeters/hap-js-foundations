@@ -1,0 +1,375 @@
+---
+/**
+ * Robot ID Card - View Source
+ * Shows the JavaScript code from the Robot ID Card demo in a readable format
+ * For students to study and discuss with AI
+ */
+
+import CodeBlock from '../../components/CodeBlock.astro';
+
+const codeHelpers = `// ============================================================
+// HELPER FUNCTIONS (Grace's scaffolding tools)
+// ============================================================
+
+function randomBetween(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function coinFlip() {
+    return Math.random() < 0.5;
+}
+
+function choose(condition, ifTrue, ifFalse) {
+    return condition ? ifTrue : ifFalse;
+}`;
+
+const codeConstants = `// ============================================================
+// ROBOT FACTS (const - these never change)
+// ============================================================
+const robotName = "HyBit A. ProtoBot";
+const modelNumber = "HAP-7000";
+const creationYear = 2024;`;
+
+const codeVariables = `// ============================================================
+// ROBOT STATUS (let - these change during operation)
+// ============================================================
+let energyLevel = 100;
+let tasksDone = 0;
+let statusMessage = "Ready to learn!";
+
+// ============================================================
+// DYNAMIC VALUES (using helper functions)
+// ============================================================
+let todaysChallenge = randomBetween(1, 10);
+let currentMood = choose(energyLevel > 50, "Energized!", "Need rest...");`;
+
+const codeCompleteTask = `// ============================================================
+// COMPLETE TASK FUNCTION
+// ============================================================
+function completeTask() {
+    // Check if we have enough energy
+    if (energyLevel < 15) {
+        statusMessage = "Too tired! Need rest first.";
+        updateDisplay();
+        logToConsole("Cannot complete task - energy too low!");
+        return;
+    }
+
+    // Use operators to update values
+    const energyCost = 15;
+    energyLevel = energyLevel - energyCost;    // Arithmetic: subtract
+    tasksDone = tasksDone + 1;                 // Arithmetic: add
+
+    // Use helper functions
+    todaysChallenge = randomBetween(1, 10);
+    currentMood = choose(energyLevel > 50, "Energized!", "Getting tired...");
+
+    // Update display with template literal
+    statusMessage = \`Completed task #\${tasksDone}!\`;
+    updateDisplay();
+    logToConsole(\`Task completed! Energy: \${energyLevel}, Tasks: \${tasksDone}\`);
+}`;
+
+const codeRest = `// ============================================================
+// REST FUNCTION
+// ============================================================
+function takeRest() {
+    const restAmount = 25;
+    energyLevel = energyLevel + restAmount;   // Arithmetic: add
+
+    // Comparison: don't exceed 100
+    if (energyLevel > 100) {
+        energyLevel = 100;
+    }
+
+    // Helper function with comparison
+    currentMood = choose(energyLevel > 50, "Energized!", "Recovering...");
+    statusMessage = "Feeling refreshed!";
+    updateDisplay();
+    logToConsole(\`Rested! Energy restored to: \${energyLevel}\`);
+}`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot ID Card - View Source</title>
+    <style>
+        :root {
+            --hap-orange: hsl(32, 76%, 63%);
+            --hap-orange-dark: hsl(32, 76%, 45%);
+            --bg-dark: hsl(220, 13%, 18%);
+            --bg-card: hsl(220, 13%, 95%);
+            --text-dark: hsl(220, 13%, 20%);
+            --text-light: hsl(220, 13%, 96%);
+            --text-muted: hsl(220, 10%, 50%);
+            --border-color: hsl(220, 13%, 80%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.75rem;
+            color: var(--hap-orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .demo-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--hap-orange);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .demo-link:hover {
+            background-color: var(--hap-orange-dark);
+        }
+
+        .code-section {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, var(--hap-orange), var(--hap-orange-dark));
+            color: white;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .section-content {
+            padding: 1rem;
+        }
+
+        .section-description {
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background-color: hsl(32, 76%, 95%);
+            border-radius: 6px;
+            border-left: 3px solid var(--hap-orange);
+        }
+
+        .section-description strong {
+            color: var(--hap-orange-dark);
+        }
+
+        .ai-prompts {
+            background-color: hsl(210, 70%, 95%);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        .ai-prompts h2 {
+            color: hsl(210, 70%, 40%);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-prompts ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .ai-prompts li {
+            color: var(--text-dark);
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed hsl(210, 70%, 80%);
+            font-size: 0.9rem;
+        }
+
+        .ai-prompts li:last-child {
+            border-bottom: none;
+        }
+
+        .ai-prompts code {
+            background-color: hsl(210, 70%, 90%);
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.85rem;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--hap-orange);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Override CodeBlock styles for dark background context */
+        .code-section :global(pre) {
+            margin: 0;
+            border-radius: 6px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!--
+    HAP Educational Content © 2026 Cynthia Teeters. All rights reserved.
+    HyBit A. ProtoBot (HAP) character and the apprentice learning methodology are proprietary educational innovations.
+    -->
+
+    <div class="container">
+        <header class="page-header">
+            <h1>Robot ID Card - View Source</h1>
+            <p>Study the JavaScript code that powers HAP's Robot ID Card</p>
+            <a href="/demos/robot-id-card/" class="demo-link">See It In Action →</a>
+        </header>
+
+        <!-- Helper Functions -->
+        <section class="code-section">
+            <div class="section-header">
+                <span>🛠️</span>
+                <h2>Helper Functions</h2>
+            </div>
+            <div class="section-content">
+                <div class="section-description">
+                    <strong>Station 5:</strong> These are the scaffolding tools Grace provides.
+                    <code>randomBetween()</code> generates random numbers, <code>coinFlip()</code>
+                    returns true/false randomly, and <code>choose()</code> picks between two values.
+                </div>
+                <CodeBlock code={codeHelpers} lang="javascript" />
+            </div>
+        </section>
+
+        <!-- Constants -->
+        <section class="code-section">
+            <div class="section-header">
+                <span>🔒</span>
+                <h2>Constants (Facts)</h2>
+            </div>
+            <div class="section-content">
+                <div class="section-description">
+                    <strong>Station 3:</strong> These use <code>const</code> because they never change.
+                    HAP's name, model number, and creation year are permanent facts.
+                </div>
+                <CodeBlock code={codeConstants} lang="javascript" />
+            </div>
+        </section>
+
+        <!-- Variables -->
+        <section class="code-section">
+            <div class="section-header">
+                <span>🔓</span>
+                <h2>Variables (State)</h2>
+            </div>
+            <div class="section-content">
+                <div class="section-description">
+                    <strong>Station 3 + 4:</strong> These use <code>let</code> because they change.
+                    Notice the different data types: numbers (<code>energyLevel</code>),
+                    strings (<code>statusMessage</code>), and values from helper functions.
+                </div>
+                <CodeBlock code={codeVariables} lang="javascript" />
+            </div>
+        </section>
+
+        <!-- Complete Task -->
+        <section class="code-section">
+            <div class="section-header">
+                <span>✅</span>
+                <h2>Complete Task Function</h2>
+            </div>
+            <div class="section-content">
+                <div class="section-description">
+                    <strong>Station 5:</strong> See operators in action! Arithmetic (<code>-</code>, <code>+</code>),
+                    comparison (<code>&lt;</code>, <code>&gt;</code>), and template literals (<code>`${}`</code>).
+                </div>
+                <CodeBlock code={codeCompleteTask} lang="javascript" />
+            </div>
+        </section>
+
+        <!-- Rest Function -->
+        <section class="code-section">
+            <div class="section-header">
+                <span>😴</span>
+                <h2>Rest Function</h2>
+            </div>
+            <div class="section-content">
+                <div class="section-description">
+                    <strong>Station 5:</strong> More operators and the <code>choose()</code> helper.
+                    Notice how we cap energy at 100 using a comparison.
+                </div>
+                <CodeBlock code={codeRest} lang="javascript" />
+            </div>
+        </section>
+
+        <!-- AI Study Prompts -->
+        <div class="ai-prompts">
+            <h2><span>🤖</span> Try Asking AI About This Code</h2>
+            <ul>
+                <li>"Can you explain how <code>const</code> and <code>let</code> are used differently in this code?"</li>
+                <li>"Why does the mood change when energy drops below 50? How does <code>choose()</code> work?"</li>
+                <li>"What would happen if I used <code>=</code> instead of <code>===</code> in a comparison?"</li>
+                <li>"How does <code>randomBetween(1, 10)</code> generate a random number?"</li>
+                <li>"Why are template literals (<code>`${}`</code>) easier to read than string concatenation?"</li>
+            </ul>
+        </div>
+
+        <a href="/stations/station6/" class="back-link">← Back to Station 6</a>
+    </div>
+</body>
+</html>
