@@ -101,8 +101,9 @@ const modelNumber = "HAP-7000";
 const creationYear = 2024;
 
 // HAP's current state (these change as HAP works)
-let energyLevel = 100;  // Percentage, decreases with tasks
-let tasksDone = 0;      // Count, increases as tasks complete
+let energyLevel = 100;       // Percentage, decreases with tasks
+let tasksDone = 0;           // Count, increases as tasks complete
+let statusMessage = "Ready to learn!";  // Updates after actions
 
 // Display the initial state
 console.log("Robot initialized:", robotName);

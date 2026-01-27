@@ -86,7 +86,7 @@ console.log(isLucky);  // true or false
 // Choose between two values based on a condition
 const currentMood = choose(
     energyLevel > 50,      // condition to check
-    "Feeling good!",       // value if true
+    "Energized!",          // value if true
     "Need rest..."         // value if false
 );
 console.log(currentMood);  // Depends on energyLevel!`;
@@ -106,7 +106,7 @@ const todaysChallenge = randomBetween(1, 10);
 // Mood based on energy
 const currentMood = choose(
     energyLevel > 50,
-    "Feeling good!",
+    "Energized!",
     "Need rest..."
 );
 
@@ -114,7 +114,7 @@ const currentMood = choose(
 console.log("Energy:", energyLevel);        // 85
 console.log("Tasks:", tasksDone);           // 1
 console.log("Challenge:", todaysChallenge); // Random 1-10
-console.log("Mood:", currentMood);          // "Feeling good!"`;
+console.log("Mood:", currentMood);          // "Energized!"`;
 
 const codeTypeConversion = `// Type conversion for display
 const energyLevel = 85;
