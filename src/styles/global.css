@@ -1291,6 +1291,65 @@ h4 {
   margin: 0.5rem 0;
 }
 
+/* Try-It Demo Callout */
+.try-it-callout {
+  background-color: hsl(210, 30%, 95%);
+  border: 2px solid hsl(210, 40%, 70%);
+  border-left: 4px solid hsl(210, 70%, 50%);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.try-it-callout h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.05rem;
+  color: hsl(210, 40%, 30%);
+}
+
+.try-it-callout p {
+  margin: 0.25rem 0;
+}
+
+.try-it-callout a {
+  color: hsl(210, 70%, 45%);
+  font-weight: bold;
+}
+
+.try-it-callout a:hover {
+  text-decoration: underline;
+}
+
+/* Sticky Demo Banner */
+.demo-banner {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: hsl(210, 40%, 20%);
+  color: hsl(0, 0%, 95%);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  border-bottom: 2px solid hsl(32, 76%, 63%);
+}
+
+.demo-banner-icon {
+  font-size: 1.1rem;
+}
+
+.demo-banner-link {
+  color: hsl(32, 76%, 63%);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.demo-banner-link:hover {
+  text-decoration: underline;
+}
+
 .single-image-container {
   text-align: center;
   margin: 2rem 0;
