@@ -4,7 +4,7 @@ import { defineConfig } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
   // Update this to your deployment URL
-  site: 'https://example.com',
+  site: 'https://hap-js-foundations.netlify.app/',
   // Serve static files from public directory
   publicDir: 'public',
   vite: {
